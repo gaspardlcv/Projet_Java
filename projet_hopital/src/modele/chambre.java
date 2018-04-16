@@ -10,5 +10,9 @@ package modele;
  * @author gaspa
  */
 public class chambre {
+    int id_chambre;
+    int id_service;
+    infirmier surveillant;
+    int nb_lits;
     
 }

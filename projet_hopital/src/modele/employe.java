@@ -10,5 +10,8 @@ package modele;
  * @author gaspa
  */
 public class employe {
-    
+    int id;
+    String nom;
+    String prenom;
+    String adresse;
 }

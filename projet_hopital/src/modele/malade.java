@@ -10,5 +10,11 @@ package modele;
  * @author gaspa
  */
 public class malade {
-    
+    int id;
+    String nom;
+    String prenom;
+    int tel;
+    String adresse;
+    String mutuelle;
+    int id_docteur;
 }

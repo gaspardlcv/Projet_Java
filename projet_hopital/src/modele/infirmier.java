@@ -10,5 +10,7 @@ package modele;
  * @author gaspa
  */
 public class infirmier {
-    
+    int code_service;
+    String rotation;
+    int salaire;
 }

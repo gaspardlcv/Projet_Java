@@ -9,6 +9,7 @@ package modele;
  *
  * @author gaspa
  */
-public class docteur {
+public class docteur extends employe{
+    String specialite;
     
 }

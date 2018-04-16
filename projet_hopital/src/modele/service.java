@@ -10,5 +10,8 @@ package modele;
  * @author gaspa
  */
 public class service {
-    
+    int code;
+    String nom;
+    int directeur;
+    String batiment;
 }

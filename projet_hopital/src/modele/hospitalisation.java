@@ -10,5 +10,8 @@ package modele;
  * @author gaspa
  */
 public class hospitalisation {
-    
+    int id_malade;
+    int id_service;
+    int id_chambre;
+    int lit;
 }

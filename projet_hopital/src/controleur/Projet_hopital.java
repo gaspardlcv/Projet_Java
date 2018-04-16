@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modele.*;
+import vue.BDDgestion_vue;
 
 public class Projet_hopital {
 

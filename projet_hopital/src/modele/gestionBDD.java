@@ -11,33 +11,22 @@ package modele;
  */
 
 import connexion.*;
-import controleur.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class gestionBDD {
-    Connexion local;
-    ArrayList<String> table;
+    private Connexion local;
+    private ArrayList<Object> table;
     
     public gestionBDD() throws ClassNotFoundException, SQLException{
         local = new Connexion("projet_java","root","");
-        
-        table = local.remplirChampsTable("docteur");
-        for(String elem : table){
-        System.out.println(elem+"  ");
-        
-        }
-        table = local.remplirChampsRequete("SELECT * FROM docteur");
-        for(String elem : table){
-        System.out.println(elem+"  ");
-        
-        }
+       
     }
     
     
-    public void remove()
+    public void remove(int numero_objet)
     {
-
+        
     }
     
     public void add()
@@ -48,6 +37,20 @@ public class gestionBDD {
     public void modify()
     {
 
+    }
+
+    /**
+     * @return the local
+     */
+    public Connexion getLocal() {
+        return local;
+    }
+
+    /**
+     * @return the table
+     */
+    public ArrayList<Object> getTable() {
+        return table;
     }
     
     

@@ -35,4 +35,20 @@ public class gestionBDD {
     }
     
     
+    public void remove()
+    {
+
+    }
+    
+    public void add()
+    {
+
+    }
+    
+    public void modify()
+    {
+
+    }
+    
+    
 }

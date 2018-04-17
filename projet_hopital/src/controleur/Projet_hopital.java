@@ -25,6 +25,7 @@ public class Projet_hopital {
     public static void main(String[] args) {
         try{
             gestionBDD bdd = new gestionBDD();
+            BDDgestion_vue bddvue = new BDDgestion_vue();
             
         } catch (SQLException ex) {
             System.out.println("pas pu se connecter     SQLException ex");

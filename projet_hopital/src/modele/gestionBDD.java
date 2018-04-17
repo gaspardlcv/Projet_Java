@@ -13,15 +13,21 @@ package modele;
 import connexion.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JCheckBox;
 
 public class gestionBDD {
-    private Connexion local;
-    private ArrayList<Object> table;//données de la table
-    private ArrayList<Object> champs_table;//nom des propriétes de la table
-    private String nom_table;//nom de la table recherchée obetnue dnas le menu de recherche
+    protected Connexion local;
+    protected ArrayList<Object> table;//données de la table
+    protected ArrayList<Object> champs_table;//nom des propriétes de la table
+    protected String nom_table;//nom de la table recherchée obetnue dnas le menu de recherche
+    
     
     public gestionBDD() throws ClassNotFoundException, SQLException{
-        local = new Connexion("projet_java","root","");
+        local = new Connexion("hopital","root","");
+        
+        //Ajout STeven
+        remplirTables();
+        //Ajout STeven
         
         ///test pour bosser sur un exemple (docteur ici)
         champs_table = local.remplirChampsTable("docteur");
@@ -38,6 +44,21 @@ public class gestionBDD {
 
     }
     
+    //AJout steven
+    private void remplirTables() {
+        
+        local.ajouterTable("chambre");
+        local.ajouterTable("docteur");
+        local.ajouterTable("employe");
+        local.ajouterTable("hospitalisation");
+        local.ajouterTable("infirmier");
+        local.ajouterTable("malade");
+        local.ajouterTable("service");
+        local.ajouterTable("soigne");
+    }
+    
+    
+    //Ajout Steven
     
     public void remove(int numero_objet) throws SQLException
     {

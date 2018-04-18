@@ -159,6 +159,31 @@ public class Connexion {
         // Retourner l'ArrayList
         return liste;
     }
+    
+    //AJout : steven
+    //Methode pour retourner le nom des champs (malade, docteur etc.)
+    public ArrayList getChamps(String table) throws SQLException
+    {
+        // récupération de l'ordre de la requete
+        rset = stmt.executeQuery("select * from " + table);
+
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+
+        // calcul du nombre de colonnes du resultat
+        int nbColonne = rsetMeta.getColumnCount();
+
+        // creation d'une ArrayList de String
+        ArrayList<String> liste;
+        liste = new ArrayList<>();
+        for (int i = 0; i < nbColonne; i++) 
+        {
+            liste.add(rsetMeta.getColumnLabel(i + 1));
+        }
+        
+        return liste;
+    }
+    
 
     /**
      * Methode qui retourne l'ArrayList des champs de la requete en parametre

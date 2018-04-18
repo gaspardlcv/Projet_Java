@@ -21,6 +21,7 @@ public class gestionBDD {
     protected ArrayList<Object> champs_table;//nom des propriétes de la table
     protected String nom_table;//nom de la table recherchée obetnue dnas le menu de recherche
     
+    protected java.util.List<JCheckBox> champsCoches= new ArrayList();
     
     public gestionBDD() throws ClassNotFoundException, SQLException{
         local = new Connexion("hopital","root","");
@@ -57,6 +58,18 @@ public class gestionBDD {
         local.ajouterTable("soigne");
     }
     
+    public ArrayList retourLignes()
+    {
+        
+        ArrayList champsChoisis = new ArrayList(); // champs cochés à retourner
+        for(int i=0; i<champsCoches.size();i++)
+        {
+            if((!"".equals(champsCoches.get(i).getText())) && champsCoches.get(i).isSelected())
+                champsChoisis.add(champsCoches.get(i).getText());
+        }
+        return champsChoisis;
+        
+    }
     
     //Ajout Steven
     

@@ -40,7 +40,7 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
     // Ajout : Steven
     JButton connect; // bouton pour se connecter
     private JComboBox combo;
-    java.util.List<JCheckBox> champsCoches= new ArrayList();
+    
     
     JPanel recherche;
     JPanel barrerecherche;
@@ -83,7 +83,16 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         
         afficherTables();
                     
-        afficherLignes(combo.getSelectedItem().toString());
+        for(int i=0;i<local.getChamps(combo.getSelectedItem().toString()).size();i++)
+            {
+                 
+                 champsCoches.get(i).setSelected(true);
+      
+            }
+        afficherLignes(combo.getSelectedItem().toString(), retourLignes());
+        
+        
+        
         
         //Ajout : Steven
         
@@ -96,7 +105,6 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         panneau.setLocationRelativeTo(null);
         panneau.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panneau.setVisible(true);
-        System.out.println("zff");
         
     }
     public void display()
@@ -116,14 +124,14 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         }
     }
     
-    public void afficherLignes(String nomTable) {
+    public void afficherLignes(String nomTable, ArrayList champsChoisis) {
         try {
             
             ArrayList<String> liste;
             
             champs_table=new ArrayList<>();
             checkbox.removeAll();
-            champsCoches.clear();
+            
 
             // effacer les résultats
             fenetreLignes.removeAll();
@@ -151,12 +159,23 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             //On remplit les checkbox restant par du vide
             for(int i=local.getChamps(nomTable).size();i<6;i++)
             {
-                champsCoches.add(new JCheckBox());
+                champsCoches.add(new JCheckBox(""));
                 champsCoches.get(i).setVisible(false);
             }
 
             // recuperer la liste de la table sélectionnée
-            String requeteSelectionnee = "select * from " + nomTable + ";";
+            String requeteSelectionnee = "select";
+            for(int i=0; i<champsChoisis.size();i++)
+            {
+                requeteSelectionnee += " " + champsChoisis.get(i);
+                if(i+1<champsChoisis.size())
+                {
+                    requeteSelectionnee+= ", ";
+                }
+            }
+            requeteSelectionnee+= " from " + nomTable + ";";
+          //  System.out.println(requeteSelectionnee);
+         //   String requeteSelectionnee = "select * from " + nomTable;
             liste = local.remplirChampsRequete(requeteSelectionnee);
 
             // afficher les lignes de la requete selectionnee a partir de la liste
@@ -165,6 +184,57 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             }
 
         } catch (SQLException e) {
+            // afficher l'erreur dans les résultats
+            fenetreRes.setText("");
+            fenetreRes.append("Echec table SQL");
+            e.printStackTrace();
+
+        }
+    }
+    
+    public void afficherChamps(String nomTable, ArrayList champsChoisis)
+    {
+        try {
+            
+            ArrayList<String> liste;
+            
+            champs_table=new ArrayList<>();
+            checkbox.removeAll();
+            
+
+            // effacer les résultats
+            fenetreLignes.removeAll();
+
+            // recupérér les résultats de la table selectionnee
+            liste = local.remplirChampsTable(nomTable);
+
+            // afficher les champs de la table selectionnee 
+            fenetreLignes.setText("");
+            for (String liste1 : liste) 
+            {
+                fenetreLignes.append(liste1);
+                
+            }
+            
+            for(int i=0;i<local.getChamps(nomTable).size();i++)
+            {
+                 champs_table.add(local.getChamps(nomTable).get(i).toString());
+                 champsCoches.add(new JCheckBox(champs_table.get(i).toString()));
+                 champsCoches.get(i).setVisible(true);
+                 champsCoches.get(i).addItemListener(this);
+                 checkbox.add(champsCoches.get(i));
+                 
+                 fenetreRes.append(champs_table.get(i).toString());
+            }
+            
+            //On remplit les checkbox restant par du vide
+            for(int i=local.getChamps(nomTable).size();i<6;i++)
+            {
+                champsCoches.add(new JCheckBox(""));
+                champsCoches.get(i).setVisible(false);
+            }
+            
+        }catch (SQLException e) {
             // afficher l'erreur dans les résultats
             fenetreRes.setText("");
             fenetreRes.append("Echec table SQL");
@@ -183,36 +253,47 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
     @Override
     @SuppressWarnings("CallToThreadDumpStack")
     public void itemStateChanged(ItemEvent evt) {
+        
+        ArrayList champsChoisis = new ArrayList();
+        
+        
         // sélection d'une requete et afficher ses résultats
         if (evt.getSource() == combo) {
             // recuperer la liste des lignes de la requete selectionnee
-            afficherLignes(combo.getSelectedItem().toString());
+            champsCoches.clear();
+            afficherChamps(combo.getSelectedItem().toString(), champsChoisis);
             
         } 
         
         if(evt.getSource() == champsCoches.get(0))
         {
-            System.out.println("1");
+            champsChoisis=retourLignes();
+            afficherLignes(combo.getSelectedItem().toString(),champsChoisis);
         }
         if(evt.getSource() == champsCoches.get(1))
         {
-            System.out.println("2");
+            champsChoisis=retourLignes();
+            afficherLignes(combo.getSelectedItem().toString(),champsChoisis);
         }
         if(evt.getSource() == champsCoches.get(2))
         {
-            System.out.println("3");
+            champsChoisis=retourLignes();
+            afficherLignes(combo.getSelectedItem().toString(),champsChoisis);
         }
         if(evt.getSource() == champsCoches.get(3))
         {
-            System.out.println("4");
+            champsChoisis=retourLignes();
+            afficherLignes(combo.getSelectedItem().toString(),champsChoisis);
         }
         if(evt.getSource() == champsCoches.get(4))
         {
-            System.out.println("5");
+            champsChoisis=retourLignes();
+            afficherLignes(combo.getSelectedItem().toString(),champsChoisis);
         }
         if(evt.getSource() == champsCoches.get(5))
         {
-            System.out.println("6");
+            champsChoisis=retourLignes();
+            afficherLignes(combo.getSelectedItem().toString(),champsChoisis);
         }
     }
     //Ajout :steven

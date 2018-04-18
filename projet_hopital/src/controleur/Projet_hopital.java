@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modele.*;
 import vue.BDDgestion_vue;
+import vue.Connection_page;
 
 public class Projet_hopital {
 
@@ -26,7 +27,7 @@ public class Projet_hopital {
         try{
             gestionBDD bdd = new gestionBDD();
             BDDgestion_vue bddvue = new BDDgestion_vue();
-            
+            Connection_page co = new Connection_page();
         } catch (SQLException ex) {
             System.out.println("pas pu se connecter     SQLException ex");
         }

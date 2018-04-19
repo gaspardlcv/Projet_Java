@@ -92,9 +92,10 @@ public class gestionBDD {
     {
         String[] champs;
         String element_to_delete= (String)table.get(numero_objet);
-        String request="DELETE FROM ";
+        String request="DELETE FROM `";
         String[] data=element_to_delete.split(",");;
         request+=nom_table;
+        request+="`";
         champs=getcleprimaire();
         request+=" WHERE";
         for(int i = 0; i< champs.length;i++){
@@ -102,23 +103,48 @@ public class gestionBDD {
                     request+=" AND";
                 }
                 //ajouter le champs a comparer dans la requete exemple: 'id'
-                request+=" '" +champs[i]+"'" ;
+                request+=" CONCAT(`"+nom_table+"`.`" +champs[i]+"`)" ;
                 //ajouter la donnée a comparer dans la requete exemple: ''
                 request+=" ='" +data[i]+"'" ;
+                request=request.replaceAll("[\r\n]+", "");
                 
         }
         System.out.println(request);  
-        table= local.remplirChampsRequete(request);
+        local.executeUpdate(request);
         //réafficher la liste table actualisé sans l'élément suprrimé
-        for(Object elem : table){
-        System.out.println(elem+"  ");
-        }
 
     }
     
-    public void add()
+    //INSERT INTO `docteur` (`numero`, `specialite`) VALUES ('', 'Generaliste')
+    public void add(ArrayList<String> data) throws SQLException
     {
-
+        ArrayList<Object> champs;
+        String[] champs_nom;
+        String request="INSERT INTO `";
+        request+=data.get(0);
+        request+="` (";
+        champs = local.remplirChampsTable(data.get(0));
+        String c=(String)champs.get(0);
+        c=c.substring(1);
+        champs_nom = c.split(" ");
+        
+        for(int i=0;i<data.size()-1;i++)
+        {
+            if(i>=1)
+                request+=",";
+            request+="`" + champs_nom[i]+ "`";
+        }
+        request+=") VALUES (";
+        for(int i=1;i<data.size();i++)
+        {
+            if(i>=2)
+                request+=",";
+            request+="'" + data.get(i)+ "'";
+        }
+        request+=")";
+        request=request.replaceAll("[\r\n]+", "");
+        System.out.println(request);
+        local.executeUpdate(request);
     }
     
     public void modify()

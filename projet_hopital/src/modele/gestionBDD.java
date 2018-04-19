@@ -147,9 +147,41 @@ public class gestionBDD {
         local.executeUpdate(request);
     }
     
-    public void modify()
+    //UPDATE `docteur` SET `numero` = '7', `specialite` = 'Pneumologue' WHERE CONCAT(`docteur`.`numero`) = '4'
+    public void modify(int numero_objet, ArrayList<String> data) throws SQLException
     {
-
+        String element_to_delete= (String)table.get(numero_objet);
+        String[] ancient_data=element_to_delete.split(",");
+        ArrayList<Object> champs;
+        String[] champs_nom;
+        String request="UPDATE `";
+        request+=data.get(0);
+        request+="` SET ";
+        champs = local.remplirChampsTable(data.get(0));
+        String c=(String)champs.get(0);
+        c=c.substring(1);
+        champs_nom = c.split(" ");
+        
+        for(int i=0;i<data.size()-1;i++)
+        {
+            if(i>=1)
+                request+=", ";
+            request+="`" + champs_nom[i]+ "`=";
+            request+="'" + data.get(i+1)+ "'";
+        }
+        request+=" WHERE";
+        for(int i = 0; i< data.size()-1;i++){
+                if(i>=1){
+                    request+=" AND";
+                }
+                //ajouter le champs a comparer dans la requete exemple: 'id'
+                request+=" CONCAT(`"+data.get(0)+"`.`" +champs_nom[i]+"`)" ;
+                //ajouter la donnée a comparer dans la requete exemple: ''
+                request+=" ='" +ancient_data[i]+"'" ;      
+        }
+        request=request.replaceAll("[\r\n]+", "");
+        System.out.println(request);
+        local.executeUpdate(request);
     }
 
     /**

@@ -31,8 +31,9 @@ public class Projet_hopital {
             Connection_page co = new Connection_page();
             //bdd.remove(4);
             //ArrayList<String> n=new ArrayList();
-            //n.add("docteur");n.add("26");n.add("Traumatologue");
+            //n.add("docteur");n.add("26");n.add("Orthopediste");
             //bdd.add(n);
+            //bdd.modify(4,n);
         } catch (SQLException ex) {
             System.out.println("pas pu se connecter     SQLException ex");
             while (ex != null) { 

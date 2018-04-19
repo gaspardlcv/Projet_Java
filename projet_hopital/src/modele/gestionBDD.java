@@ -73,22 +73,40 @@ public class gestionBDD {
     
     //Ajout Steven
     
+    public String[] getcleprimaire() throws SQLException
+    {
+        String[] splitchamps;
+        String champs= (String)champs_table.get(0);
+        champs=champs.substring(1);
+        splitchamps = champs.split(" ");
+        return splitchamps;
+    }
+    
     public void remove(int numero_objet) throws SQLException
     {
-        ///test
+        String[] champs;
+        String element_to_delete= (String)table.get(numero_objet);
         String request="DELETE FROM ";
+        String[] data=element_to_delete.split(",");;
         request+=nom_table;
-        //convertir object en string
-        // extraire id donc tout avant la virgule
-        //
-        /*table[]=4;
-        
-        request+="WHERE condition";
-        
-        local.ajouterRequeteMaj(request);
-        local.executeUpdate(request);
-        table.remove(numero_objet);*/
+        champs=getcleprimaire();
+        request+=" WHERE";
+        for(int i = 0; i< champs.length;i++){
+                if(i>=1){
+                    request+=" AND";
+                }
+                //ajouter le champs a comparer dans la requete exemple: 'id'
+                request+=" '" +champs[i]+"'" ;
+                //ajouter la donnée a comparer dans la requete exemple: ''
+                request+=" ='" +data[i]+"'" ;
+                
+        }
+        System.out.println(request);  
+        table= local.remplirChampsRequete(request);
         //réafficher la liste table actualisé sans l'élément suprrimé
+        for(Object elem : table){
+        System.out.println(elem+"  ");
+        }
 
     }
     

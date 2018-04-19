@@ -28,14 +28,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import modele.*;
 
-public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemListener{
+public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemListener, DocumentListener{
 
     ArrayList<JPanel> docteurs;
     JFrame panneau = new JFrame();
     JTextField texte= new JTextField();
     
+    JTextField test = new JTextField();
     
     // Ajout : Steven
     JButton connect; // bouton pour se connecter
@@ -57,6 +60,7 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         super();
         
         //Ajout : Steven
+        
         connect = new JButton("Connexion");
         connect.addActionListener(this);
         
@@ -75,6 +79,10 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         barrerecherche.add(combo);
         barrerecherche.add(checkbox);
         
+        test.setPreferredSize(new Dimension(100, 20));
+        recherche.add(test);
+        test.getDocument().addDocumentListener(this);
+        
         recherche.add(connect);
         top.add(recherche);
         top.add(barrerecherche);
@@ -83,13 +91,8 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         
         afficherTables();
                     
-        for(int i=0;i<local.getChamps(combo.getSelectedItem().toString()).size();i++)
-            {
-                 
-                 champsCoches.get(i).setSelected(true);
-      
-            }
-        afficherLignes(combo.getSelectedItem().toString(), retourLignes());
+        
+      //  afficherLignes(combo.getSelectedItem().toString(), retourLignes());
         
         
         
@@ -100,7 +103,7 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         panneau.setLayout(new BorderLayout());
         panneau.getContentPane().add(top, BorderLayout.NORTH);
         panneau.getContentPane().add(fenetreLignes, BorderLayout.CENTER);
-        panneau.setSize(1200,800);
+        panneau.setSize(1700,1000);
         panneau.setResizable(false);
         panneau.setLocationRelativeTo(null);
         panneau.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -128,11 +131,21 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         try {
             
             ArrayList<String> liste;
+                        
+            ArrayList<String> prefixes;
             
-            champs_table=new ArrayList<>();
-            checkbox.removeAll();
+            String requeteWhere = new String(" where "); // requete "... WHERE"
             
-
+            for(int i=0;i<champs_recherche.size();i++)
+            {
+                if(!"".equals(champs_recherche.get(i).getText()))
+                {
+                    champsCoches.get(i).setSelected(true);
+                }
+            }
+            
+            champsChoisis=retourLignes();
+            
             // effacer les résultats
             fenetreLignes.removeAll();
 
@@ -144,25 +157,27 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             for (String liste1 : liste) 
             {
                 fenetreLignes.append(liste1);
-                
             }
             
-            for(int i=0;i<local.getChamps(nomTable).size();i++)
-            {
-                 champs_table.add(local.getChamps(nomTable).get(i).toString());
-                 champsCoches.add(new JCheckBox(champs_table.get(i).toString()));
-                 champsCoches.get(i).setVisible(true);
-                 champsCoches.get(i).addItemListener(this);
-                 checkbox.add(champsCoches.get(i));
-            }
             
-            //On remplit les checkbox restant par du vide
-            for(int i=local.getChamps(nomTable).size();i<6;i++)
-            {
-                champsCoches.add(new JCheckBox(""));
-                champsCoches.get(i).setVisible(false);
-            }
 
+           // On ajoute les conditions avec les barres de recherche
+            for(int i=0; i<champs_recherche.size();i++)
+            {
+                if(champs_recherche.get(i).getId()!=null && !"".equals(champs_recherche.get(i).getText()))
+                {
+                    requeteWhere+= champs_recherche.get(i).getId() + " like " + "'" + champs_recherche.get(i).getText() + "%' and ";
+                    
+                }
+            }
+            
+            // si il y a du texte dans les champs de recherche, on enleve le " and "
+            if(!" where ".equals(requeteWhere)){
+            requeteWhere=requeteWhere.substring(0,requeteWhere.length()-5);
+            requeteWhere+=";";
+            }
+            
+            
             // recuperer la liste de la table sélectionnée
             String requeteSelectionnee = "select";
             for(int i=0; i<champsChoisis.size();i++)
@@ -173,9 +188,12 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
                     requeteSelectionnee+= ", ";
                 }
             }
-            requeteSelectionnee+= " from " + nomTable + ";";
-          //  System.out.println(requeteSelectionnee);
-         //   String requeteSelectionnee = "select * from " + nomTable;
+            requeteSelectionnee+= " from " + nomTable ;
+            
+            //Si il y a du texte dans les champs de recherche
+            if(!" where ".equals(requeteWhere))
+                System.out.println(requeteSelectionnee+=requeteWhere);
+            
             liste = local.remplirChampsRequete(requeteSelectionnee);
 
             // afficher les lignes de la requete selectionnee a partir de la liste
@@ -200,7 +218,8 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             
             champs_table=new ArrayList<>();
             checkbox.removeAll();
-            
+            champs_recherche.clear();
+            System.out.println("ahah");
 
             // effacer les résultats
             fenetreLignes.removeAll();
@@ -222,9 +241,20 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
                  champsCoches.add(new JCheckBox(champs_table.get(i).toString()));
                  champsCoches.get(i).setVisible(true);
                  champsCoches.get(i).addItemListener(this);
-                 checkbox.add(champsCoches.get(i));
                  
-                 fenetreRes.append(champs_table.get(i).toString());
+                 champs_recherche.add(new CustomTextField());
+                 champs_recherche.get(i).setPreferredSize(new Dimension(100,15));
+                 champs_recherche.get(i).setId(champs_table.get(i).toString());
+                 champs_recherche.get(i).setVisible(true);
+                 champs_recherche.get(i).getDocument().addDocumentListener(this);
+                 
+                 champs_recherche.get(i).setVisible(true);
+                 
+                 
+                 checkbox.add(champsCoches.get(i));
+                 checkbox.add(champs_recherche.get(i));
+                 
+                // fenetreLignes.append(champs_table.get(i).toString());
             }
             
             //On remplit les checkbox restant par du vide
@@ -232,6 +262,8 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             {
                 champsCoches.add(new JCheckBox(""));
                 champsCoches.get(i).setVisible(false);
+                champs_recherche.add(new CustomTextField());
+                champs_recherche.get(i).setVisible(false);
             }
             
         }catch (SQLException e) {
@@ -260,10 +292,12 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         // sélection d'une requete et afficher ses résultats
         if (evt.getSource() == combo) {
             // recuperer la liste des lignes de la requete selectionnee
+            
+            champsChoisis=retourLignes();
             champsCoches.clear();
             afficherChamps(combo.getSelectedItem().toString(), champsChoisis);
             
-        } 
+        }
         
         if(evt.getSource() == champsCoches.get(0))
         {
@@ -295,8 +329,28 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             champsChoisis=retourLignes();
             afficherLignes(combo.getSelectedItem().toString(),champsChoisis);
         }
+        
+        
     }
     //Ajout :steven
+
+    @Override
+    public void insertUpdate(DocumentEvent de) {
+        ArrayList champsChoisis = new ArrayList();
+        champsChoisis=retourLignes();
+            afficherLignes(combo.getSelectedItem().toString(),champsChoisis);
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent de) {
+        ArrayList champsChoisis = new ArrayList();
+        champsChoisis=retourLignes();
+            afficherLignes(combo.getSelectedItem().toString(),champsChoisis);
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent de) {
+    }
     
     
 }

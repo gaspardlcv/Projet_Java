@@ -14,6 +14,9 @@ import connexion.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JCheckBox;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentListener;
+import vue.CustomTextField;
 
 public class gestionBDD {
     protected Connexion local;
@@ -22,6 +25,7 @@ public class gestionBDD {
     protected String nom_table;//nom de la table recherchée obetnue dnas le menu de recherche
     
     protected java.util.List<JCheckBox> champsCoches= new ArrayList();
+    protected java.util.List<CustomTextField> champs_recherche= new ArrayList();
     
     public gestionBDD() throws ClassNotFoundException, SQLException{
         local = new Connexion("hopital","root","");
@@ -65,7 +69,9 @@ public class gestionBDD {
         for(int i=0; i<champsCoches.size();i++)
         {
             if((!"".equals(champsCoches.get(i).getText())) && champsCoches.get(i).isSelected())
+            {                
                 champsChoisis.add(champsCoches.get(i).getText());
+            }
         }
         return champsChoisis;
         

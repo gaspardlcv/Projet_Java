@@ -5,7 +5,6 @@
  */
 package vue;
 
-import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -18,10 +17,8 @@ import static java.lang.System.exit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -50,57 +47,104 @@ public class Connection_page extends JFrame implements ActionListener{
    
     private JLabel identifiant = new JLabel("Identifiant :");
     private JLabel code = new JLabel("Mot de passe :");
-    private JLabel titre = new JLabel("Bienvenue ");
+    private JLabel titre = new JLabel("BIENVENUE ");
     
     //Changement de taillet et de font pour le titre
-    private Font taille_titre = new Font("Arial", Font.PLAIN, 50);
-    
-    //Constructeur de fenêtre
+    private Font taille_titre = new Font("Arial", Font.PLAIN+Font.BOLD, 50);
+    private Font taille_form = new Font("Vernon Adams", Font.PLAIN+Font.BOLD, 20);
+    private Font taille_bouton = new Font("Vernon Adams", Font.PLAIN+Font.BOLD, 20);
+  
+     
+//Constructeur de fenêtre
     public Connection_page(){
         
         //On appelle la classe mere JFrame
-        super("Fenetre de connection");
+        super("Fenetre de connexion");
   
         //On initialise la taille de la fenetre
         this.setSize(800, 600);
+        
         //Positionnenment de la fenetre a l'ecran
         this.setLocationRelativeTo(null);
-        //
+        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //Disposition des panels les unes en dessous des autres
+        panel_boutons.setLayout(new BoxLayout(panel_boutons, BoxLayout.PAGE_AXIS));
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+         
+        //Creation de sous panel
+        JPanel panel_form_1 = new JPanel();
+        panel_form_1.setPreferredSize(new Dimension(0,300));
+        JPanel panel_form_2 = new JPanel();
+        panel_form_2.setPreferredSize(new Dimension(0,500));
+        JPanel panel_form_3 = new JPanel();
+        panel_form_3.setPreferredSize(new Dimension(0,500));
         
+        //On ajoute une image à la page
+        ImageIcon icon = new ImageIcon("C:\\Users\\LAM\\Documents\\NetBeansProjects\\project_graph\\hopital.png");
+        ImageIcon icon2 = new ImageIcon("C:\\Users\\LAM\\Documents\\NetBeansProjects\\project_graph\\logo.png");
+        
+        JLabel img = new JLabel(icon);
+        JLabel img2 = new JLabel(icon2);
+       
+ 
         //On ajoute les boutons dans le panel
         valid.addActionListener(this);
         quit.addActionListener(this);
-        
+
         //Changement de couleur du fond des panels
-        panel_bloc.setBackground(Color.yellow);
-        panel_boutons.setBackground(Color.green);
+        panel_bloc.setBackground(new Color(158,197,236));
+        panel_form_1.setBackground(new Color(0,171,159));
+        panel_form_2.setBackground(new Color(0,171,159));
+        panel_form_3.setBackground(new Color(158,197,236));
         
-        //Taille du panel
-        panel_bloc.setPreferredSize(new Dimension(10,10));
-        
-        //Par défaut, on place le bouton dans le premier panel qui est dans la fenêtre
-        this.panel.add(this.panel_bloc);
-        this.panel_bloc.add(this.titre);
-        
-        //On change la taille du titre
-        this.titre.setFont(taille_titre);
-        
+         
         //Changement de taille des textfields
         id.setPreferredSize(new Dimension(150,30));
         mdp.setPreferredSize(new Dimension(150,30));
         
-        //On ajoute le formulaire dans le panel du bas
-        panel_boutons.add(identifiant);
-        panel_boutons.add(id);
-        panel_boutons.add(code);
-        panel_boutons.add(mdp);
-        panel_boutons.add(valid);
-        panel_boutons.add(quit);
+        //Changement de taille des boutons
+        valid.setPreferredSize(new Dimension(100,50));
+        quit.setPreferredSize(new Dimension(100,50));
         
+        //Changement de taille ecriture des boutons
+        this.valid.setFont(taille_bouton);
+        this.quit.setFont(taille_bouton);
+        
+        //On change la taille du titre
+        this.titre.setFont(taille_titre);
+        this.identifiant.setFont(taille_form);
+        this.code.setFont(taille_form);    
+        
+        //On change la couleur du titre
+        this.titre.setForeground(new Color(255,255,255));
+        
+        //On change la taille de l'image
+        img.setPreferredSize(new Dimension(150,150));
+        
+        //On ajoute l'image
+        panel_bloc.add(img);
+        panel_bloc.add(img2);
+         
+        //Par défaut, on place le bouton dans le premier panel qui est dans la fenêtre
+        this.panel.add(this.panel_bloc);
+        this.panel_bloc.add(this.titre);
+ 
+       //On ajoute le formulaire dans le panel du bas
+        panel_form_1.add(identifiant);
+        panel_form_1.add(id);
+        panel_form_2.add(code);
+        panel_form_2.add(mdp);
+        panel_form_3.add(valid);
+        panel_form_3.add(quit);
+        
+        panel_boutons.add(panel_form_1);
+        panel_boutons.add(panel_form_2);
+        panel_boutons.add(panel_form_3);
+        
+       
+    
         //On ajoute le panel du bas sur le panel principal
         this.panel.add(this.panel_boutons);
         
@@ -131,16 +175,16 @@ public class Connection_page extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         
-        String login = id.getText();
-        String password = mdp.getText();
+       // String login = (String)id.getText();
+       // String password = mdp.getText();
         
        
-        boolean  essai = Pattern.compile(login).matcher("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)+$").matches();
+      //  boolean  essai = Pattern.compile(login).matcher("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)+$").matches();
         
         //Si on clique sur Valider changement de fenetre
         if(source == valid)
         {
-            if(login != null && password != null){
+            if(id.getText() != null && mdp.getText() != null){
                 changerMenu();
             }
             else
@@ -148,7 +192,6 @@ public class Connection_page extends JFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null,"Mot de passe incorrect ! ","Error",1);
             }
             
-                
         }
         
         //Si on clique sur Quitter fenetre se ferme

@@ -6,6 +6,7 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -22,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import modele.AfficheGraph;
 
 /**
  *
@@ -66,6 +68,16 @@ public class Menu_page extends JFrame  {
     private JLabel label_adresse = new JLabel("Adresse ");
     private JLabel label_mutuelle = new JLabel("Mutuelle ");
     private JLabel label_specialite = new JLabel("Spécialité ");
+    
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
    
     
     //Onglets du menu
@@ -113,6 +125,7 @@ public class Menu_page extends JFrame  {
         //
         onglet_recherche();
         onglet_ajout();
+        onglet_reporting();
         
         //
         this.getContentPane().add(panelOnglet);
@@ -233,6 +246,77 @@ public class Menu_page extends JFrame  {
      //   panel_ajout.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
   
        
+    }
+    
+        public void onglet_reporting() {
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        AfficheGraph a = new AfficheGraph();
+        jPanel3 = a.affiche("Nombre d'hospitalisés par service", "hospitalisation", "code_service", "no_malade");
+        jPanel4 = a.affiche("Nombre d'infirmier par rotation", "infirmier", "rotation", "numero");
+        jPanel2 = a.affiche("Nombre de docteur par spécialité", "docteur", "specialite", "numero");
+        jPanel1 = a.affiche("Nombre de malade par mutuelle", "malade", "mutuelle", "numero");
+        
+        jButton1.setText("Nombre d'hospitalisés par service");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
+        jButton2.setText("Nombre d'infirmier par rotation");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+
+        jButton3.setText("Nombre de docteur par spécialité");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
+        
+        jButton4.setText("Nombre de malade par mutuelle");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
+        
+        panel_reporting.setLayout(null);
+
+        jPanel5.setBounds(110,120,570,360);
+        jPanel5.setLayout(new java.awt.CardLayout());
+        
+        jPanel3.setBounds(0,0,570,360);
+        jPanel4.setBounds(0,0,570,360);
+        jPanel2.setBounds(0,0,570,360);
+        jPanel1.setBounds(0,0,570,360);
+        
+        jButton1.setBounds(25, 25, 345, 30);
+        jButton2.setBounds(415, 25, 345, 30);
+        jButton3.setBounds(25, 70, 345, 30);
+        jButton4.setBounds(415, 70, 345, 30);
+        
+        jPanel5.add(jPanel3, "panelOne");
+        jPanel5.add(jPanel4, "panelTwo");
+        jPanel5.add(jPanel2, "panelThree");
+        jPanel5.add(jPanel1, "panelFour");
+        
+        panel_reporting.add(jPanel5);
+        panel_reporting.add(jButton1);
+        panel_reporting.add(jButton2);
+        panel_reporting.add(jButton3);
+        panel_reporting.add(jButton4);
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        CardLayout card = (CardLayout) jPanel5.getLayout();
+        card.show(jPanel5, "panelOne");
+    }
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+        CardLayout card = (CardLayout) jPanel5.getLayout();
+        card.show(jPanel5, "panelTwo");
+    }
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
+        CardLayout card = (CardLayout) jPanel5.getLayout();
+        card.show(jPanel5, "panelThree");
+    }
+    
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
+        CardLayout card = (CardLayout) jPanel5.getLayout();
+        card.show(jPanel5, "panelFour");
     }
     
     

@@ -27,6 +27,12 @@ public class gestionBDD {
     protected java.util.List<JCheckBox> champsCoches= new ArrayList();
     protected java.util.List<CustomTextField> champs_recherche= new ArrayList();
     
+    /**
+     * 
+     * Constructeur de la classe gestion avec la BDD locale
+     * @throws java.lang.ClassNotFoundException Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+     * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+     */
     public gestionBDD() throws ClassNotFoundException, SQLException{
         local = new Connexion("hopital","root","");
         
@@ -49,6 +55,23 @@ public class gestionBDD {
 
     }
     
+    /**
+     * 
+     * Constructeur de la classe gestion avec la BDD en ligne
+     * @param username 
+     * @param password
+     * @param loginDatabase
+     * @param passwordDatabase
+     * @throws java.lang.ClassNotFoundException Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+     * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+     */
+    public gestionBDD(String username, String password,String loginDatabase,String passwordDatabase) throws ClassNotFoundException, SQLException{
+        local = new Connexion( username, password, loginDatabase, passwordDatabase);
+        
+        //Ajout STeven
+        remplirTables();
+    }
+    
     //AJout steven
     private void remplirTables() {
         
@@ -61,6 +84,7 @@ public class gestionBDD {
         local.ajouterTable("service");
         local.ajouterTable("soigne");
     }
+    
     
     public ArrayList retourLignes()
     {
@@ -77,8 +101,10 @@ public class gestionBDD {
         
     }
     
-    //Ajout Steven
-    
+    /**
+     * 
+     * @throws java.sql.SQLException si le sql ne contient rien
+     */
     public String[] getcleprimaire() throws SQLException
     {
         String[] splitchamps;
@@ -88,6 +114,11 @@ public class gestionBDD {
         return splitchamps;
     }
     
+    /**
+     * Supprime un objet dans une table de la BDD
+     * @param numero_objet indice de l'objet à supprimer dans le arraylist table
+     * @throws java.sql.SQLException    Rejete s'il y a un problème concernant la requete DELETE FROM
+     */
     public void remove(int numero_objet) throws SQLException
     {
         String[] champs;
@@ -115,7 +146,11 @@ public class gestionBDD {
 
     }
     
-    //INSERT INTO `docteur` (`numero`, `specialite`) VALUES ('', 'Generaliste')
+    /**
+     * Ajoute un objet dans une table de la BDD
+     * @param data contient les nouvelles données à ajouter avec à data.get(0) le type de donnée (ex: medecin,infirmier...)
+     * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+     */
     public void add(ArrayList<String> data) throws SQLException
     {
         ArrayList<Object> champs;
@@ -147,7 +182,12 @@ public class gestionBDD {
         local.executeUpdate(request);
     }
     
-    //UPDATE `docteur` SET `numero` = '7', `specialite` = 'Pneumologue' WHERE CONCAT(`docteur`.`numero`) = '4'
+    /**
+     * Modifie un objet dans une table de la BDD
+     * @param numero_objet indice de l'objet à supprimer dans le arraylist table
+     * @param data contient les nouvelles données à modifier avec à data.get(0) le type de donnée (ex: medecin,infirmier...)
+     * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+     */
     public void modify(int numero_objet, ArrayList<String> data) throws SQLException
     {
         String element_to_delete= (String)table.get(numero_objet);

@@ -43,8 +43,7 @@ public class Menu_page extends JFrame implements ActionListener  {
     /*Panel du menu*/
     private JPanel panel2 = new JPanel();
     
-    private String[] nom_tab
-            ;
+    private String[] nom_tab;
     
     private gestionBDD gestion;
     private Connexion connect;
@@ -537,7 +536,7 @@ public class Menu_page extends JFrame implements ActionListener  {
                 ArrayList <String> l_champs = null;
                 try {
                     gestion = new gestionBDD();
-                    l_champs = connect.recupChampsTable(nom_supp);
+                    l_champs = connect.getChamps(nom_supp);
                     
                     /*Creation d'une table de strings de la taille de 
                     l'ArrayList car arraylist taille variable alors que

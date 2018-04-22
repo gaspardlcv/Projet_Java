@@ -39,19 +39,6 @@ public class gestionBDD {
         //Ajout STeven
         remplirTables();
         //Ajout STeven
-        
-        ///test pour bosser sur un exemple (docteur ici)
-        champs_table = local.remplirChampsTable("docteur");
-        for(Object elem : champs_table){
-        System.out.println(elem+"  ");
-        }
-
-        table = local.remplirChampsRequete("SELECT * FROM docteur");
-        for(Object elem : table){
-        System.out.println(elem+"  ");
-        }
-        nom_table="docteur";
-        ///fin du test
 
     }
     

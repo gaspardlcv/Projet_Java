@@ -5,13 +5,7 @@
  */
 package vue;
 
-/**
- *
- * @author gaspa
- */
-
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -20,29 +14,24 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import modele.*;
+import modele.gestionBDD;
 
-public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemListener, DocumentListener{
-
-    ArrayList<JPanel> docteurs;
+/**
+ *
+ * @author Steven
+ */
+public class Recherche extends gestionBDD implements ActionListener, ItemListener, DocumentListener {
+    
     JFrame panneau = new JFrame();
-    JTextField texte= new JTextField();
-    
-    
-    // Ajout : Steven
     private CustomComboBox combo;
     
     
@@ -51,27 +40,15 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
     JPanel checkbox;
     JPanel top;
     JPanel resultat;
-    
-    private final JTextArea fenetreLignes, fenetreRes;
-    
     String[] nom_champs; String[][] lignes;
     String[] nom_champs_coches;
     
     //tableau affichant les résultats
     JTable resultats=new JTable();
     
-    // Ajout : Steven
-    
-    
-    
-            
-    public BDDgestion_vue() throws ClassNotFoundException, SQLException
+    public Recherche() throws ClassNotFoundException, SQLException
     {
         super();
-        
-        
-        //Ajout : Steven
-        
         
         combo = new CustomComboBox();
         combo.setPreferredSize(new Dimension(100, 20));
@@ -92,8 +69,6 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         
         top.add(recherche);
         top.add(barrerecherche);
-        fenetreLignes = new JTextArea();
-        fenetreRes = new JTextArea();
         resultats=new JTable();
         
         afficherTables();
@@ -117,18 +92,7 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         panneau.setLocationRelativeTo(null);
         panneau.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panneau.setVisible(true);
-        
     }
-    public void display()
-    {
-        /*for(String elem : this.getTable()){
-        texte.setText(elem);  
-        docteurs.add(texte);
-        }*/
-    }
-    
-    
-    // AJout : steven
     
     public void afficherTables()
     {
@@ -138,7 +102,7 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
         }
     }
     
-    public void afficherLignes(String nomTable, ArrayList champsChoisis) {
+     public void afficherLignes(String nomTable, ArrayList champsChoisis) {
         try {
             
             
@@ -159,8 +123,7 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             
             champsChoisis=retourLignes();
             
-            // effacer les résultats
-            fenetreLignes.removeAll();
+            
 
             // recupérér les résultats de la table selectionnee
             liste_champs = local.getChamps(nomTable);
@@ -174,10 +137,10 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             nom_champs_coches=(String[]) champsChoisis.toArray(nom_champs_coches);
             
             // afficher les champs de la table selectionnee 
-            fenetreLignes.setText("");
+            champs_table.clear();
             for (String liste1 : liste_champs) 
             {
-                fenetreLignes.append(liste1);
+                champs_table.add(liste1);
                 
             }
             
@@ -219,7 +182,7 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
 
             // afficher les lignes de la requete selectionnee a partir de la liste
             for (String liste1 : liste_champs) {
-                fenetreLignes.append(liste1);
+                table.add(liste1);
             }
             
             lignes=local.getChampsRequete(requeteSelectionnee);
@@ -246,8 +209,7 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
 
         } catch (SQLException e) {
             // afficher l'erreur dans les résultats
-            fenetreRes.setText("");
-            fenetreRes.append("Echec table SQL");
+            
             e.printStackTrace();
 
         }
@@ -263,19 +225,17 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             checkbox.removeAll(); // pk je peux plus cocher 
             champs_recherche.clear();
 
-            // effacer les résultats
-            fenetreLignes.removeAll();
+            
 
             // recupérér les résultats de la table selectionnee
             liste = local.getChamps(nomTable);
 
             
             // afficher les champs de la table selectionnee
-            fenetreLignes.setText("");
+            champs_table.clear();
             for (String liste1 : liste) 
             {
-                fenetreLignes.append(liste1);
-                //nom_champs.add(liste1);
+                champs_table.add(liste1);
             }
             
             for(int i=0;i<local.getChamps(nomTable).size();i++)
@@ -310,7 +270,6 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             }
             
             
-            
          /*   String[] champs = new String[champs_table.size()];
             champs = champs_table.toArray(champs);
             DefaultTableModel table = new DefaultTableModel(new Object[1][2],champs);
@@ -322,8 +281,6 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             
         }catch (SQLException e) {
             // afficher l'erreur dans les résultats
-            fenetreRes.setText("");
-            fenetreRes.append("Echec table SQL");
             e.printStackTrace();
 
         }
@@ -383,6 +340,5 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
     @Override
     public void changedUpdate(DocumentEvent de) {
     }
-    
     
 }

@@ -24,21 +24,33 @@ public class gestionBDD {
     protected ArrayList<Object> champs_table;//nom des propriétes de la table
     protected String nom_table;//nom de la table recherchée obetnue dnas le menu de recherche
     
+    // recherches de base 
     protected java.util.List<JCheckBox> champsCoches= new ArrayList();
     protected java.util.List<CustomTextField> champs_recherche= new ArrayList();
     
-    /**
-     * 
-     * Constructeur de la classe gestion avec la BDD locale
-     * @throws java.lang.ClassNotFoundException Rejete si il n'arrvie pas à se connecter à la base de donnée locale
-     * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
-     */
+    //recherches "compliquées"
+    protected java.util.List<JCheckBox> barreCheck2 = new ArrayList();
+    
+    
     public gestionBDD() throws ClassNotFoundException, SQLException{
         local = new Connexion("hopital","root","");
         
         //Ajout STeven
         remplirTables();
         //Ajout STeven
+        
+        ///test pour bosser sur un exemple (docteur ici)
+        champs_table = local.remplirChampsTable("docteur");
+        for(Object elem : champs_table){
+        System.out.println(elem+"  ");
+        }
+
+        table = local.remplirChampsRequete("SELECT * FROM docteur");
+        for(Object elem : table){
+        System.out.println(elem+"  ");
+        }
+        nom_table="docteur";
+        ///fin du test
 
     }
     
@@ -95,7 +107,6 @@ public class gestionBDD {
         local.ajouterTable("soigne");
     }
     
-    
     public ArrayList retourLignes()
     {
         
@@ -110,6 +121,8 @@ public class gestionBDD {
         return champsChoisis;
         
     }
+    
+    
     
     /**
      * 

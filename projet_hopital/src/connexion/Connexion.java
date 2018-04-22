@@ -164,15 +164,42 @@ public class Connexion {
     //Methode pour retourner le nom des champs (malade, docteur etc.)
     public ArrayList getChamps(String table) throws SQLException
     {
+        String sqlQuery = "select * from "+table;
+        if("docteur".equals(table))
+        {
+            sqlQuery = "select docteur.numero, docteur.specialite, employe.nom, employe.prenom, employe.adresse, employe.tel from " + table;
+            sqlQuery+=" inner join employe on employe.numero=docteur.numero";
+        }
+        if("chambre".equals(table))
+        {
+            sqlQuery = "select chambre.code_service, chambre.no_chambre, chambre.surveillant, chambre.nb_lits, hospitalisation.no_malade, hospitalisation.lit from " + table;
+            sqlQuery+=" INNER JOIN hospitalisation ON (chambre.no_chambre=hospitalisation.no_chambre AND chambre.code_service=hospitalisation.code_service)";
+        }
+        if("hospitalisation".equals(table))
+        {
+            sqlQuery = "select hospitalisation.no_malade, hospitalisation.code_service, hospitalisation.no_chambre, hospitalisation.lit, malade.nom, malade.prenom, malade.adresse, malade.tel, malade.mutuelle from " + table;
+            sqlQuery+=" INNER JOIN malade ON (malade.numero=hospitalisation.no_malade)";
+        }
+         if("infirmier".equals(table))
+        {
+            sqlQuery = "select infirmier.numero, infirmier.code_service, infirmier.rotation, infirmier.salaire, employe.nom, employe.prenom, employe.adresse, employe.tel from " + table;
+            sqlQuery+=" inner join employe on employe.numero=infirmier.numero";
+        }
+         
+         if("service".equals(table))
+        {
+            sqlQuery = "select service.code, service.nom, service.batiment, service.directeur, employe.nom, employe.prenom from " + table;
+            sqlQuery+= " inner join employe on employe.numero=service.directeur";
+        }
+        // r
         // récupération de l'ordre de la requete
-        rset = stmt.executeQuery("select * from " + table);
+        rset = stmt.executeQuery(sqlQuery);
 
         // récupération du résultat de l'ordre
         rsetMeta = rset.getMetaData();
 
         // calcul du nombre de colonnes du resultat
         int nbColonne = rsetMeta.getColumnCount();
-
         // creation d'une ArrayList de String
         ArrayList<String> liste;
         liste = new ArrayList<>();
@@ -180,7 +207,6 @@ public class Connexion {
         {
             liste.add(rsetMeta.getColumnLabel(i + 1));
         }
-        
         return liste;
     }
     
@@ -192,6 +218,7 @@ public class Connexion {
      * @throws java.sql.SQLException
      */
     public ArrayList remplirChampsRequete(String requete) throws SQLException {
+        
         // récupération de l'ordre de la requete
         rset = stmt.executeQuery(requete);
 
@@ -201,30 +228,113 @@ public class Connexion {
         // calcul du nombre de colonnes du resultat
         int nbColonne = rsetMeta.getColumnCount();
 
-        // creation d'une ArrayList de String
-        ArrayList<String> liste;
-        liste = new ArrayList<String>();
-
+        
+ArrayList<String> liste = new ArrayList<>();
         // tant qu'il reste une ligne 
         while (rset.next()) {
             String champs;
             champs = rset.getString(1); // ajouter premier champ
-
             // Concatener les champs de la ligne separes par ,
             for (int i = 1; i < nbColonne; i++) {
                 champs = champs + "," + rset.getString(i + 1);
+                liste.add(rset.getString(i+1));
             }
-
+            
             // ajouter un "\n" à la ligne des champs
             champs = champs + "\n";
 
             // ajouter les champs de la ligne dans l'ArrayList
             liste.add(champs);
         }
+        
+         // récupération de l'ordre de la requete
+        rset = stmt.executeQuery(requete);
+
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+        String[][] resultatsRequete=new String[liste.size()][nbColonne];
+        
+        for (int i = 0;i < liste.size(); i++)
+            {
+                while (rset.next()) {
+
+                    String champs;
+                for(int k=0;k<nbColonne;k++)
+                {
+                    champs = rset.getString(k+1);
+                    resultatsRequete[i][k]=champs;
+                   // System.out.print("Case " + i + k +" du tableau " +resultatsRequete[i][k]+ " ");
+                }
+                i++;
+            }
+            }
+        
 
         // Retourner l'ArrayList
         return liste;
+    
     }
+    
+    public String[][] getChampsRequete(String requete) throws SQLException {
+        System.out.println(requete);
+        // récupération de l'ordre de la requete
+        rset = stmt.executeQuery(requete);
+
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+
+        // calcul du nombre de colonnes du resultat
+        int nbColonne = rsetMeta.getColumnCount();
+        
+
+        
+ArrayList<String> liste = new ArrayList<>();
+int nbLigne=0;
+        // tant qu'il reste une ligne 
+        while (rset.next()) {
+            String champs;
+            champs = rset.getString(1); // ajouter premier champ
+            // Concatener les champs de la ligne separes par ,
+            for (int i = 1; i < nbColonne; i++) {
+                champs = champs + "," + rset.getString(i + 1);
+                liste.add(rset.getString(i+1));
+            }
+            nbLigne++;
+            // ajouter un "\n" à la ligne des champs
+            champs = champs + "\n";
+
+            // ajouter les champs de la ligne dans l'ArrayList
+            liste.add(champs);
+        }
+        
+         // récupération de l'ordre de la requete
+        rset = stmt.executeQuery(requete);
+
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+        String[][] resultatsRequete=new String[nbLigne][nbColonne];
+        System.out.println(nbLigne);
+        for (int i = 0;i < nbLigne; i++)
+            {
+                while (rset.next()) {
+
+                    String champs;
+                for(int k=0;k<nbColonne;k++)
+                {
+                    champs = rset.getString(k+1);
+                    resultatsRequete[i][k]=champs;
+                   // System.out.print("Case " + i + k +" du tableau " +resultatsRequete[i][k]+ " ");
+                }
+                i++;
+            }
+            }
+        
+
+       
+        // Retourner l'ArrayList
+        return resultatsRequete;
+    }
+    
 
     /**
      * Méthode qui execute une requete de MAJ en parametre
@@ -235,8 +345,7 @@ public class Connexion {
         stmt.executeUpdate(requeteMaj);
     }
     
-    
-        /**
+    /**
      * @return the conn
      */
     public Connection getConn() {
@@ -334,5 +443,3 @@ public class Connexion {
         this.requetesMaj = requetesMaj;
     }
 }
-
-

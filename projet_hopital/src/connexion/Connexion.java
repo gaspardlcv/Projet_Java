@@ -234,4 +234,105 @@ public class Connexion {
     public void executeUpdate(String requeteMaj) throws SQLException {
         stmt.executeUpdate(requeteMaj);
     }
+    
+    
+        /**
+     * @return the conn
+     */
+    public Connection getConn() {
+        return conn;
+    }
+
+    /**
+     * @param conn the conn to set
+     */
+    public void setConn(Connection conn) {
+        this.conn = conn;
+    }
+
+    /**
+     * @return the stmt
+     */
+    public Statement getStmt() {
+        return stmt;
+    }
+
+    /**
+     * @param stmt the stmt to set
+     */
+    public void setStmt(Statement stmt) {
+        this.stmt = stmt;
+    }
+
+    /**
+     * @return the rset
+     */
+    public ResultSet getRset() {
+        return rset;
+    }
+
+    /**
+     * @param rset the rset to set
+     */
+    public void setRset(ResultSet rset) {
+        this.rset = rset;
+    }
+
+    /**
+     * @return the rsetMeta
+     */
+    public ResultSetMetaData getRsetMeta() {
+        return rsetMeta;
+    }
+
+    /**
+     * @param rsetMeta the rsetMeta to set
+     */
+    public void setRsetMeta(ResultSetMetaData rsetMeta) {
+        this.rsetMeta = rsetMeta;
+    }
+
+    /**
+     * @return the tables
+     */
+    public ArrayList<String> getTables() {
+        return tables;
+    }
+
+    /**
+     * @param tables the tables to set
+     */
+    public void setTables(ArrayList<String> tables) {
+        this.tables = tables;
+    }
+
+    /**
+     * @return the requetes
+     */
+    public ArrayList<String> getRequetes() {
+        return requetes;
+    }
+
+    /**
+     * @param requetes the requetes to set
+     */
+    public void setRequetes(ArrayList<String> requetes) {
+        this.requetes = requetes;
+    }
+
+    /**
+     * @return the requetesMaj
+     */
+    public ArrayList<String> getRequetesMaj() {
+        return requetesMaj;
+    }
+
+    /**
+     * @param requetesMaj the requetesMaj to set
+     */
+    public void setRequetesMaj(ArrayList<String> requetesMaj) {
+        this.requetesMaj = requetesMaj;
+    }
+}
+
 }

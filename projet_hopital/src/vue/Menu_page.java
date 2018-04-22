@@ -114,6 +114,13 @@ public class Menu_page extends JFrame implements ActionListener {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
 
+    
+    /**
+    * 
+    * Constructeur de la classe Menu_page
+    * @throws java.lang.ClassNotFoundException Rejete si il n'arrive pas à se connecter à la base de donnée locale
+    * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+    */
     public Menu_page() throws SQLException, ClassNotFoundException {
         /*On appelle la classe mere JFrame pour la deuxieme page*/
         super("Fenetre de menu");
@@ -157,6 +164,12 @@ public class Menu_page extends JFrame implements ActionListener {
         lancement_menu();
     }
 
+    /*
+       * Fonctionn permettant de lancer le menu
+       @throws java.lang.ClassNotFoundException Rejete si il n'arrive pas à se connecter à la base de donnée locale
+    * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+    
+    */
     public void lancement_menu() throws ClassNotFoundException, SQLException {
         /*Meme caracteristiques que la premiere page*/
         // this.setSize(800, 600);
@@ -191,6 +204,13 @@ public class Menu_page extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
+    /*
+     * Fonction de l'onglet Recherche
+     * Permet a l'utilisatueur de rechercher ce qu'il souhaite dans la base
+     *  de données en écrivant ou cochant 
+    * @throws java.lang.ClassNotFoundException Rejete si il n'arrive pas à se connecter à la base de donnée locale
+    * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+    */
     public void onglet_recherche() throws ClassNotFoundException, ClassNotFoundException, SQLException {
         Recherche rech = new Recherche();
         /*Taille de la liste deroulante*/
@@ -214,6 +234,12 @@ public class Menu_page extends JFrame implements ActionListener {
         //   String select_find = combo_find.getSelectedItem().toString();
     }
 
+    /*
+     * Fonction de l'onglet Ajouter
+     * Permet a l'utilisatueur d'ajouter des données dans la BDD
+    * @throws java.lang.ClassNotFoundException Rejete si il n'arrive pas à se connecter à la base de donnée locale
+    * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+    */
     public void onglet_ajout() throws ClassNotFoundException, SQLException {
         /*Espaces des bordures*/
         panel_ajout.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

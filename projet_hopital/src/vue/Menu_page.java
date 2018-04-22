@@ -63,6 +63,10 @@ public class Menu_page extends JFrame implements ActionListener  {
     private JComboBox combo_find = new JComboBox();
     private JComboBox combo_add = new JComboBox();
     private JComboBox combo_supp = new JComboBox();
+    /*Creation de la liste pour la spécialité*/
+    private JComboBox combo_specialite = new JComboBox();
+     /*Creation de la liste pour les infirmiers*/
+    private JComboBox combo_rotation = new JComboBox();
     
     /*Affiche label*/
     private JLabel label_recherche = new JLabel("Recherche : ");
@@ -74,6 +78,9 @@ public class Menu_page extends JFrame implements ActionListener  {
     private JTextField txt_tel = new JTextField(null);
     private JTextField txt_adresse = new JTextField(null);
     private JTextField txt_mutuelle = new JTextField(null);
+     /*Creation zones de texte pour salaire et code service des infirmiers*/
+    private JTextField txt_service = new JTextField(null);
+    private JTextField txt_salaire = new JTextField(null);
    
     /*Labels pour chaque bouton*/
     private JLabel label_numero = new JLabel("Numéro ");
@@ -91,6 +98,10 @@ public class Menu_page extends JFrame implements ActionListener  {
     
     private JButton confirm = new JButton("Confirmer");
     
+     /*Creation bouton pour supprimer*/
+     private   JButton button_supp = new JButton("Effacer");
+     private    JButton button_modify = new JButton("Modifier");
+    
     
      private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -104,7 +115,7 @@ public class Menu_page extends JFrame implements ActionListener  {
     
     
     public Menu_page() throws SQLException, ClassNotFoundException{
-        //On appelle la classe mere JFrame pour la deuxieme page*/
+        /*On appelle la classe mere JFrame pour la deuxieme page*/
         super("Fenetre de menu");
         
         /*On instancie un objet de connexion*/
@@ -141,7 +152,6 @@ public class Menu_page extends JFrame implements ActionListener  {
         DefaultComboBoxModel supp_modele = new DefaultComboBoxModel(nom_tab);
    
         combo_supp.setModel(supp_modele);
-        
         
         /*On appelle la methode pour lancer le menu*/
         lancement_menu();
@@ -186,7 +196,7 @@ public class Menu_page extends JFrame implements ActionListener  {
     }
    
     
-    public void onglet_recherche() throws ClassNotFoundException, ClassNotFoundException, SQLException
+     public void onglet_recherche() throws ClassNotFoundException, ClassNotFoundException, SQLException
     {
         Recherche rech = new Recherche();
         /*Taille de la liste deroulante*/
@@ -217,7 +227,7 @@ public class Menu_page extends JFrame implements ActionListener  {
         /*Espaces des bordures*/
         panel_ajout.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
           
-        
+        confirm.addActionListener(this);
         
         /*On redéfinit la taille des zones de texte*/
         txt_numero.setPreferredSize(new Dimension(150,30));
@@ -235,9 +245,9 @@ public class Menu_page extends JFrame implements ActionListener  {
         
         /*Les champs de la liste Ajout*/
         combo_add.addItem("Sélectionner");
-        combo_add.addItem("Docteur");
-        combo_add.addItem("Malade");
-        combo_add.addItem("Infirmier");
+        combo_add.addItem("docteur");
+        combo_add.addItem("malade");
+        combo_add.addItem("infirmier");
         
         combo_add.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent arg0) {
@@ -374,8 +384,7 @@ public class Menu_page extends JFrame implements ActionListener  {
         central3.add(label_adresse);
         central3.add(txt_adresse);
         
-        /*Creation de la liste pour la spécialité*/
-        JComboBox combo_specialite = new JComboBox();
+        
         
         central4.add(label_specialite);
         
@@ -445,15 +454,13 @@ public class Menu_page extends JFrame implements ActionListener  {
         central3.add(label_adresse);
         central3.add(txt_adresse);
         
-        /*Creation de la liste pour les infirmiers*/
-        JComboBox combo_rotation = new JComboBox();
+       
         JLabel label_rotation = new JLabel("Rotation ");
         
         /*Creation zones de texte pour salaire et code service des infirmiers*/
         JLabel label_service = new JLabel("Code Service ");
         JLabel label_salaire = new JLabel("Salaire ");
-        JTextField txt_service = new JTextField(null);
-        JTextField txt_salaire = new JTextField(null);
+        
         
         /*Redimension des zones de textes*/
         txt_service.setPreferredSize(new Dimension(50,30));
@@ -502,12 +509,11 @@ public class Menu_page extends JFrame implements ActionListener  {
     {
         /*Création de la liste pour le choix de suppression*/
         JLabel label_supp = new JLabel("Supprimer : ");
-        
-        /*Creation bouton pour supprimer*/
-        JButton button_supp = new JButton("Effacer");
-        
+     
         combo_supp.setPreferredSize(new Dimension(100,30));
     
+        button_supp.addActionListener(this);
+        button_modify.addActionListener(this);
         
         /*Creation de sous panels*/
         JPanel panel_delete_1 = new JPanel();
@@ -539,8 +545,9 @@ public class Menu_page extends JFrame implements ActionListener  {
                 ArrayList <String> l_champs = null;
                 try {
                     gestion = new gestionBDD();
-                    l_champs = connect.getChamps(nom_supp);
-                    
+                 //   l_champs = connect.getChamps(nom_supp);
+                 l_champs = connect.recupChampsTable(nom_supp);   
+                 
                     /*Creation d'une table de strings de la taille de 
                     l'ArrayList car arraylist taille variable alors que
                     tableau taille fixe*/
@@ -593,7 +600,7 @@ public class Menu_page extends JFrame implements ActionListener  {
          
          /*Creation d'un listener pour le bouton permettant de supprimer
          une donnée de la BDD*/
-         button_supp.addItemListener(new ItemListener() {
+     /*    button_supp.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent ev) {
                 Object bobo = ev.getSource();
                 
@@ -610,7 +617,7 @@ public class Menu_page extends JFrame implements ActionListener  {
             
             }
         
-        });
+        });*/
         
         /*On place les components dans les bons panels*/ 
         panel_delete_1.add(label_supp);
@@ -620,6 +627,7 @@ public class Menu_page extends JFrame implements ActionListener  {
         panel_delete_2.add(new JScrollPane(tab_supp));
         
         panel_delete_3.add(button_supp);
+        panel_delete_3.add(button_modify);
         
         /*On place les sous panels dans le panel principal*/
         panel_delete.add(panel_delete_1);
@@ -710,9 +718,6 @@ public class Menu_page extends JFrame implements ActionListener  {
        
     }
     
-    /**
-     * Création et positionnement des éléments de l'onglet reporting
-     */
     public void onglet_reporting() {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -739,18 +744,18 @@ public class Menu_page extends JFrame implements ActionListener  {
         
         panel_reporting.setLayout(null);
 
-        jPanel5.setBounds(190,190,900,450);
+        jPanel5.setBounds(110,120,570,360);
         jPanel5.setLayout(new java.awt.CardLayout());
         
-        jPanel3.setBounds(0,0,900,450);
-        jPanel4.setBounds(0,0,900,450);
-        jPanel2.setBounds(0,0,900,450);
-        jPanel1.setBounds(0,0,900,450);
+        jPanel3.setBounds(0,0,570,360);
+        jPanel4.setBounds(0,0,570,360);
+        jPanel2.setBounds(0,0,570,360);
+        jPanel1.setBounds(0,0,570,360);
         
-        jButton1.setBounds(60, 40, 550, 30);
-        jButton2.setBounds(675, 40, 550, 30);
-        jButton3.setBounds(60, 90, 550, 30);
-        jButton4.setBounds(675, 90, 550, 30);
+        jButton1.setBounds(25, 25, 345, 30);
+        jButton2.setBounds(415, 25, 345, 30);
+        jButton3.setBounds(25, 70, 345, 30);
+        jButton4.setBounds(415, 70, 345, 30);
         
         jPanel5.add(jPanel3, "panelOne");
         jPanel5.add(jPanel4, "panelTwo");
@@ -764,37 +769,21 @@ public class Menu_page extends JFrame implements ActionListener  {
         panel_reporting.add(jButton4);
     }
 
-    /**
-     * Passe au "panelOne" du CardLayout quand on clique sur le bouton 1
-     * @param evt l'évènement du clic sur le bouton
-     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout card = (CardLayout) jPanel5.getLayout();
         card.show(jPanel5, "panelOne");
     }
 
-    /**
-     * Passe au "panelTwo" du CardLayout quand on clique sur le bouton 2
-     * @param evt l'évènement du clic sur le bouton
-     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout card = (CardLayout) jPanel5.getLayout();
         card.show(jPanel5, "panelTwo");
     }
 
-    /**
-     * Passe au "panelThree" du CardLayout quand on clique sur le bouton 3
-     * @param evt l'évènement du clic sur le bouton
-     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout card = (CardLayout) jPanel5.getLayout();
         card.show(jPanel5, "panelThree");
     }
     
-    /**
-     * Passe au "panelFour" du CardLayout quand on clique sur le bouton 4
-     * @param evt l'évènement du clic sur le bouton
-     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout card = (CardLayout) jPanel5.getLayout();
         card.show(jPanel5, "panelFour");
@@ -811,22 +800,54 @@ public class Menu_page extends JFrame implements ActionListener  {
         String tel_add = txt_tel.getText();
         String adresse_add = txt_adresse.getText();
         String mutuelle_add = txt_mutuelle.getText();
-         
+        String specialite_add = (String) combo_specialite.getSelectedItem();
+        String rotation_add = (String) combo_rotation.getSelectedItem();
+        String code_add = txt_service.getText();
+        String salaire_add = txt_salaire.getText();
+        
         /*Creation d'une arrayList*/
         ArrayList <String> stock_ajout = new ArrayList<String>();
         
-        stock_ajout.add(numero_add);
-        stock_ajout.add(nom_add);
-        stock_ajout.add(prenom_add);
-        stock_ajout.add(tel_add);
-        stock_ajout.add(adresse_add);
-        stock_ajout.add(mutuelle_add);
+        if(combo_add.getSelectedItem().equals("docteur")){
+            stock_ajout.add("docteur");
+            stock_ajout.add(numero_add);
+            stock_ajout.add(nom_add);
+            stock_ajout.add(prenom_add);
+            stock_ajout.add(tel_add);
+            stock_ajout.add(adresse_add);
+            stock_ajout.add(specialite_add);
+     
+        }
         
-        
+        if(combo_add.getSelectedItem().equals("malade"))
+        {
+            stock_ajout.add("malade");
+            stock_ajout.add(numero_add);
+            stock_ajout.add(nom_add);
+            stock_ajout.add(prenom_add);
+            stock_ajout.add(adresse_add);
+            stock_ajout.add(tel_add);
+            stock_ajout.add(mutuelle_add);
+        }
+                
+        if(combo_add.getSelectedItem().equals("infirmier"))
+        {
+            stock_ajout.add("infirmier");
+            stock_ajout.add(numero_add);
+            stock_ajout.add(nom_add);
+            stock_ajout.add(prenom_add);
+            stock_ajout.add(tel_add);
+            stock_ajout.add(adresse_add);
+            stock_ajout.add(code_add);
+            stock_ajout.add(rotation_add);
+            stock_ajout.add(salaire_add);
+           
+        }
+     
         gestionBDD gestion = null;
         try {
             gestion = new gestionBDD();
-            System.out.println("*****");
+          
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Menu_page.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -837,11 +858,32 @@ public class Menu_page extends JFrame implements ActionListener  {
         {
             try {
                 gestion.add(stock_ajout);
+                 // panel_ajout.validate();
             } catch (SQLException ex) {
                 Logger.getLogger(Menu_page.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        /*Clique sur SUPPRIMER va effacer le champ sélectionné*/
+        if(source == button_supp){
+            try {
+                /*On appelle la fonction supprimer qui va agir sur la BDD*/
+                gestion.remove(tab_supp.getSelectedRow());
+                
+                /*On rafraiche la page avec le champ supprimé*/
+                panel_delete.validate();
+                
+              
+            } catch (SQLException ex) {
+                Logger.getLogger(Menu_page.class.getName()).log(Level.SEVERE, null, ex);
+           
+            }
+        
+             if(source == button_modify){
+            
+              }
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+         }
 
+    }
 }

@@ -159,6 +159,33 @@ public class Connexion {
         // Retourner l'ArrayList
         return liste;
     }
+    //Ajout kevin
+    public ArrayList recupChampsTable(String table) throws SQLException {
+        // récupération de l'ordre de la requete
+        rset = stmt.executeQuery("select * from " + table);
+
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+
+        // calcul du nombre de colonnes du resultat
+        int nbColonne = rsetMeta.getColumnCount();
+
+        // creation d'une ArrayList de String
+        ArrayList<String> liste;
+        liste = new ArrayList<>();
+        String champs = "";
+        // Ajouter tous les champs du resultat dans l'ArrayList
+        for (int i = 0; i < nbColonne; i++) {
+            champs = rsetMeta.getColumnLabel(i + 1);
+             // ajouter les champs de la ligne dans l'ArrayList
+        liste.add(champs);
+        }
+
+       
+
+        // Retourner l'ArrayList
+        return liste;
+    }
     
     //AJout : steven
     //Methode pour retourner le nom des champs (malade, docteur etc.)

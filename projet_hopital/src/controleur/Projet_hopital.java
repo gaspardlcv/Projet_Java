@@ -26,7 +26,7 @@ public class Projet_hopital {
      */
     public static void main(String[] args) {
         try{
-            gestionBDD bdd = new gestionBDD();
+            //gestionBDD bdd = new gestionBDD();
             BDDgestion_vue bddvue = new BDDgestion_vue();
             Connection_page co = new Connection_page();
             //bdd.remove(4);

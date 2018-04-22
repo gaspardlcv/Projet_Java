@@ -40,16 +40,9 @@ public class gestionBDD {
         //Ajout STeven
         
         ///test pour bosser sur un exemple (docteur ici)
-        champs_table = local.remplirChampsTable("docteur");
-        for(Object elem : champs_table){
-        System.out.println(elem+"  ");
-        }
-
-        table = local.remplirChampsRequete("SELECT * FROM docteur");
-        for(Object elem : table){
-        System.out.println(elem+"  ");
-        }
-        nom_table="docteur";
+        champs_table = new ArrayList<Object>();
+        table = new ArrayList<Object>();
+        nom_table="";
         ///fin du test
 
     }
@@ -150,7 +143,7 @@ public class gestionBDD {
         String[] data=element_to_delete.split(",");;
         request+=nom_table;
         request+="`";
-        champs=getcleprimaire();
+        champs=getcleprimaire();  
         request+=" WHERE";
         for(int i = 0; i< champs.length;i++){
                 if(i>=1){
@@ -165,6 +158,18 @@ public class gestionBDD {
         }
         System.out.println(request);  
         local.executeUpdate(request);
+        
+        if(("docteur".equals(nom_table))||("infirmier".equals(nom_table)))
+        {
+            String second_request="DELETE FROM `employe`  WHERE";
+            second_request+=" CONCAT(`employe`.`numero`)" ;
+            //ajouter la donnée a comparer dans la requete exemple: ''
+            second_request+=" ='" +data[0]+"'" ;
+            second_request=second_request.replaceAll("[\r\n]+", "");             
+            System.out.println(second_request); 
+            System.out.println(data[1]);
+            local.executeUpdate(second_request);
+        }
         //réafficher la liste table actualisé sans l'élément suprrimé
 
     }
@@ -185,6 +190,37 @@ public class gestionBDD {
         String c=(String)champs.get(0);
         c=c.substring(1);
         champs_nom = c.split(" ");
+        
+        if(("docteur".equals(data.get(0)))||("infirmier".equals(data.get(0))))
+        {
+            String second_request="INSERT INTO `employe` (";
+            ArrayList<Object> second_champs = local.remplirChampsTable("employe");
+            String[] second_champs_nom;
+            String second_c=(String)second_champs.get(0);
+            second_c=second_c.substring(1);
+            second_champs_nom = second_c.split(" ");
+            for(int i=1;i<6;i++)
+            {
+                if(i>=2)
+                    second_request+=",";
+                second_request+="`" + second_champs_nom[i-1]+ "`";
+            }
+            second_request+=") VALUES (";
+            for(int i=1;i<6;i++)
+            {
+                if(i>=2)
+                    second_request+=",";
+                second_request+="'" + data.get(i)+ "'";
+            }
+            second_request+=")";
+            second_request=second_request.replaceAll("[\r\n]+", "");
+            System.out.println(second_request);
+            local.executeUpdate(second_request);
+            for(int i=1;i<5;i++)
+            {
+                data.remove(2);
+            }
+        }
         
         for(int i=0;i<data.size()-1;i++)
         {
@@ -224,6 +260,7 @@ public class gestionBDD {
         String c=(String)champs.get(0);
         c=c.substring(1);
         champs_nom = c.split(" ");
+        
         
         for(int i=0;i<data.size()-1;i++)
         {

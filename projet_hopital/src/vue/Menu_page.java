@@ -762,6 +762,15 @@ public class Menu_page extends JFrame implements ActionListener {
         CardLayout card = (CardLayout) jPanel5.getLayout();
         card.show(jPanel5, "panelFour");
     }
+    
+     /*Méthode qui change le panel de fenêtre*/
+    public void aller_modifier(){
+       
+        Modifier_page page = new Modifier_page();
+        this.revalidate();
+        this.setVisible(true);
+        
+    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -849,7 +858,7 @@ public class Menu_page extends JFrame implements ActionListener {
             }
 
             if (source == button_modify) {
-
+                aller_modifier();
             }
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }

@@ -31,7 +31,7 @@ import modele.gestionBDD;
  */
 public class Recherche extends gestionBDD implements ActionListener, ItemListener, DocumentListener {
     
-    JFrame panneau = new JFrame();
+    JPanel panneau = new JPanel();
     private CustomComboBox combo;
     
     
@@ -81,7 +81,7 @@ public class Recherche extends gestionBDD implements ActionListener, ItemListene
         
         //Ajout : Steven
         
-        panneau.setTitle("Hopital");
+        /*panneau.setTitle("Hopital");
         panneau.setLayout(new BorderLayout());
         panneau.getContentPane().add(top, BorderLayout.NORTH);
      //   panneau.getContentPane().add(fenetreLignes, BorderLayout.CENTER);
@@ -91,7 +91,21 @@ public class Recherche extends gestionBDD implements ActionListener, ItemListene
         panneau.setResizable(false);
         panneau.setLocationRelativeTo(null);
         panneau.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        panneau.setVisible(true);*/
+        
+        panneau.setLayout(new BorderLayout());
+        panneau.add(top, BorderLayout.NORTH);
+        panneau.add(new JScrollPane(resultats), BorderLayout.CENTER);
+       // panneau.setPreferredSize(new Dimension(1000,500));
+        
+        
         panneau.setVisible(true);
+        
+    }
+    
+    public JPanel getPanel()
+    {
+        return panneau;
     }
     
     public void afficherTables()
@@ -103,11 +117,9 @@ public class Recherche extends gestionBDD implements ActionListener, ItemListene
     }
     
      public void afficherLignes(String nomTable, ArrayList champsChoisis) {
-        try {
-            
-            
-            
-            
+        
+         try {
+       
             
             ArrayList<String> liste_champs;
             

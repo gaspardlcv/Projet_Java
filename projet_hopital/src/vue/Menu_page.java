@@ -142,6 +142,7 @@ public class Menu_page extends JFrame implements ActionListener  {
    
         combo_supp.setModel(supp_modele);
         
+        
         /*On appelle la methode pour lancer le menu*/
         lancement_menu();
     }
@@ -185,8 +186,9 @@ public class Menu_page extends JFrame implements ActionListener  {
     }
    
     
-    public void onglet_recherche()
+    public void onglet_recherche() throws ClassNotFoundException, ClassNotFoundException, SQLException
     {
+        Recherche rech = new Recherche();
         /*Taille de la liste deroulante*/
         combo_find.setPreferredSize(new Dimension(100,20));
         
@@ -201,11 +203,12 @@ public class Menu_page extends JFrame implements ActionListener  {
         combo_find.addItem("Soigne");
         
         /*Ajout de la liste deroulante*/
-        panel_recherche.add(label_recherche);
-        panel_recherche.add(combo_find);
+        panel_recherche.add(rech.getPanel());
+        
+     //   panel_recherche.add(combo_find);
         
         /*On recupere la valeur du champ selectionné*/
-        String select_find = combo_find.getSelectedItem().toString();
+     //   String select_find = combo_find.getSelectedItem().toString();
     }
     
     

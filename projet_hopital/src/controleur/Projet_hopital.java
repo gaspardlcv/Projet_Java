@@ -9,7 +9,6 @@ package controleur;
  *
  * @author gaspa
  */
-
 import controleur.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class Projet_hopital {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try{
+        try {
             //gestionBDD bdd = new gestionBDD();
             BDDgestion_vue bddvue = new BDDgestion_vue();
             Connection_page co = new Connection_page();
@@ -36,21 +35,20 @@ public class Projet_hopital {
             //bdd.modify(4,n);
         } catch (SQLException ex) {
             System.out.println("pas pu se connecter     SQLException ex");
-            while (ex != null) { 
-            String message = ex.getMessage(); 
-            String sqlState = ex.getSQLState(); 
-            int errorCode = ex.getErrorCode(); 
-            System.out.println("Message = "+message); 
-            System.out.println("SQLState = "+sqlState); 
-            System.out.println("ErrorCode = "+errorCode); 
-            ex.printStackTrace(); 
-            ex = ex.getNextException(); 
-            } 
-        }
-        catch (ClassNotFoundException ex) {
+            while (ex != null) {
+                String message = ex.getMessage();
+                String sqlState = ex.getSQLState();
+                int errorCode = ex.getErrorCode();
+                System.out.println("Message = " + message);
+                System.out.println("SQLState = " + sqlState);
+                System.out.println("ErrorCode = " + errorCode);
+                ex.printStackTrace();
+                ex = ex.getNextException();
+            }
+        } catch (ClassNotFoundException ex) {
             System.out.println("pas pu se connecter     ClassNotFoundException ex");
-        } 
-        
+        }
+
     }
-    
+
 }

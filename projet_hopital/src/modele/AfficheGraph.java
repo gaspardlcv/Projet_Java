@@ -14,15 +14,18 @@ import org.jfree.data.general.DefaultPieDataset;
  *
  * @author Pierre
  */
-public class AfficheGraph { 
+public class AfficheGraph {
+
     /**
-     * Récupère les données retournées par CreaGraph puis créé et retourne un graphique en conséquence.
+     * Récupère les données retournées par CreaGraph puis créé et retourne un
+     * graphique en conséquence.
      *
      * @param titre titre du graphique
      * @param table la table dans laquelle aller chercher les informations
      * @param c1 le nom de la premiere colonne de la table qui nous interesse
      * @param c2 le nom de la deuxieme colonne de la table qui nous interesse
-     * @return le diagramme créé en format graphique ChartPanel que l'on peut réutiliser en swing
+     * @return le diagramme créé en format graphique ChartPanel que l'on peut
+     * réutiliser en swing
      */
     public ChartPanel affiche(String titre, String table, String c1, String c2) {
         CreaGraph g = new CreaGraph();

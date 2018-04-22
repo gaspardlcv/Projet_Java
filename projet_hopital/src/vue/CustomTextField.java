@@ -12,6 +12,7 @@ import javax.swing.JTextField;
  * @author Steven
  */
 public class CustomTextField extends JTextField {
+
     private String id;
 
     /**
@@ -27,5 +28,5 @@ public class CustomTextField extends JTextField {
     public void setId(String id) {
         this.id = id;
     }
-    
+
 }

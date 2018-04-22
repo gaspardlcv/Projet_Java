@@ -9,7 +9,6 @@ package modele;
  *
  * @author gaspard
  */
-
 import connexion.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,77 +18,79 @@ import javax.swing.event.DocumentListener;
 import vue.CustomTextField;
 
 public class gestionBDD {
+
     protected Connexion local;
     protected ArrayList<String> table;//données de la table
     protected ArrayList<String> champs_table;//nom des propriétes de la table
     protected String nom_table;//nom de la table recherchée obetnue dnas le menu de recherche
-    
+
     // recherches de base 
-    protected java.util.List<JCheckBox> champsCoches= new ArrayList();
-    protected java.util.List<CustomTextField> champs_recherche= new ArrayList();
-    
+    protected java.util.List<JCheckBox> champsCoches = new ArrayList();
+    protected java.util.List<CustomTextField> champs_recherche = new ArrayList();
+
     //recherches "compliquées"
     protected java.util.List<JCheckBox> barreCheck2 = new ArrayList();
-    
-    
-    public gestionBDD() throws ClassNotFoundException, SQLException{
-        local = new Connexion("hopital","root","");
-        
+
+    public gestionBDD() throws ClassNotFoundException, SQLException {
+        local = new Connexion("hopital", "root", "");
+
         //Ajout STeven
         remplirTables();
         //Ajout STeven
-        
+
         ///test pour bosser sur un exemple (docteur ici)
         champs_table = new ArrayList<String>();
         table = new ArrayList<String>();
-        nom_table="";
+        nom_table = "";
         ///fin du test
 
     }
-    
-    public gestionBDD(String nom_table) throws ClassNotFoundException, SQLException{
-        local = new Connexion("hopital","root","");
-        
+
+    public gestionBDD(String nom_table) throws ClassNotFoundException, SQLException {
+        local = new Connexion("hopital", "root", "");
+
         //Ajout STeven
         remplirTables();
-        
+
         //Ajout STeven
-        
         ///test pour bosser sur un exemple (docteur ici)
         champs_table = local.remplirChampsTable(nom_table);
-        for(Object elem : champs_table){
-        System.out.println(elem+"  ");
+        for (Object elem : champs_table) {
+            System.out.println(elem + "  ");
         }
 
         table = local.remplirChampsRequete("SELECT * FROM " + nom_table);
-        for(Object elem : table){
-        System.out.println(elem+"  ");
+        for (Object elem : table) {
+            System.out.println(elem + "  ");
         }
-        this.nom_table=nom_table;
+        this.nom_table = nom_table;
         //fin du test
 
     }
-    
+
     /**
-     * 
+     *
      * Constructeur de la classe gestion avec la BDD en ligne
-     * @param username 
+     *
+     * @param username
      * @param password
      * @param loginDatabase
      * @param passwordDatabase
-     * @throws java.lang.ClassNotFoundException Rejete si il n'arrvie pas à se connecter à la base de donnée locale
-     * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+     * @throws java.lang.ClassNotFoundException Rejete si il n'arrvie pas à se
+     * connecter à la base de donnée locale
+     * @throws java.sql.SQLException Rejete si il n'arrvie pas à se connecter à
+     * la base de donnée locale
      */
-    public gestionBDD(String username, String password,String loginDatabase,String passwordDatabase) throws ClassNotFoundException, SQLException{
-        local = new Connexion( username, password, loginDatabase, passwordDatabase);
-        
+    public gestionBDD(String username, String password, String loginDatabase, String passwordDatabase) throws ClassNotFoundException, SQLException {
+        local = new Connexion(username, password, loginDatabase, passwordDatabase);
+
         //Ajout STeven
         remplirTables();
     }
-    
+
     //AJout steven
     private void remplirTables() {
-        
+
         local.ajouterTable("chambre");
         local.ajouterTable("docteur");
         local.ajouterTable("employe");
@@ -99,192 +100,187 @@ public class gestionBDD {
         local.ajouterTable("service");
         local.ajouterTable("soigne");
     }
-    
-    public ArrayList retourLignes()
-    {
-        
+
+    public ArrayList retourLignes() {
+
         ArrayList champsChoisis = new ArrayList(); // champs cochés à retourner
-        for(int i=0; i<champsCoches.size();i++)
-        {
-            if((!"".equals(champsCoches.get(i).getText())) && champsCoches.get(i).isSelected())
-            {                
+        for (int i = 0; i < champsCoches.size(); i++) {
+            if ((!"".equals(champsCoches.get(i).getText())) && champsCoches.get(i).isSelected()) {
                 champsChoisis.add(champsCoches.get(i).getText());
             }
         }
         return champsChoisis;
-        
+
     }
-    
-    
-    
+
     /**
-     * 
+     *
      * @throws java.sql.SQLException si le sql ne contient rien
      */
-    public String[] getcleprimaire() throws SQLException
-    {
+    public String[] getcleprimaire() throws SQLException {
         String[] splitchamps;
-        String champs= (String)getChamps_table().get(0);
-       // champs=champs.substring(1);
+        String champs = (String) getChamps_table().get(0);
+        // champs=champs.substring(1);
         splitchamps = champs.split(" ");
         return splitchamps;
     }
-    
+
     /**
      * Supprime un objet dans une table de la BDD
+     *
      * @param numero_objet indice de l'objet à supprimer dans le arraylist table
-     * @throws java.sql.SQLException    Rejete s'il y a un problème concernant la requete DELETE FROM
+     * @throws java.sql.SQLException Rejete s'il y a un problème concernant la
+     * requete DELETE FROM
      */
-    public void remove(int numero_objet) throws SQLException
-    {
+    public void remove(int numero_objet) throws SQLException {
         String[] champs;
         System.out.println("remove");
         System.out.println(table.size());
-        
-        String element_to_delete= (String)table.get(numero_objet);
-        String request="DELETE FROM `";
-        String[] data=element_to_delete.split(",");;
-        request+=getNom_table();
-        request+="`";
-        champs=getcleprimaire();  
+
+        String element_to_delete = (String) table.get(numero_objet);
+        String request = "DELETE FROM `";
+        String[] data = element_to_delete.split(",");;
+        request += getNom_table();
+        request += "`";
+        champs = getcleprimaire();
         System.out.println("WOH");
         System.out.println(champs[0]);
-        request+=" WHERE";
-        for(int i = 0; i< champs.length;i++){
-                if(i>=1){
-                    request+=" AND";
-                }
-                //ajouter le champs a comparer dans la requete exemple: 'id'
-                request+=" CONCAT(`"+getNom_table()+"`.`" +champs[i]+"`)" ;
-                //ajouter la donnée a comparer dans la requete exemple: ''
-                request+=" ='" +data[i]+"'" ;
-                request=request.replaceAll("[\r\n]+", "");
-                
-        }
-        System.out.println(request);  
-        local.executeUpdate(request);
-        
-        if(("docteur".equals(getNom_table()))||("infirmier".equals(getNom_table())))
-        {
-            String second_request="DELETE FROM `employe`  WHERE";
-            second_request+=" CONCAT(`employe`.`numero`)" ;
+        request += " WHERE";
+        for (int i = 0; i < champs.length; i++) {
+            if (i >= 1) {
+                request += " AND";
+            }
+            //ajouter le champs a comparer dans la requete exemple: 'id'
+            request += " CONCAT(`" + getNom_table() + "`.`" + champs[i] + "`)";
             //ajouter la donnée a comparer dans la requete exemple: ''
-            second_request+=" ='" +data[0]+"'" ;
-            second_request=second_request.replaceAll("[\r\n]+", "");             
-            System.out.println(second_request); 
+            request += " ='" + data[i] + "'";
+            request = request.replaceAll("[\r\n]+", "");
+
+        }
+        System.out.println(request);
+        local.executeUpdate(request);
+
+        if (("docteur".equals(getNom_table())) || ("infirmier".equals(getNom_table()))) {
+            String second_request = "DELETE FROM `employe`  WHERE";
+            second_request += " CONCAT(`employe`.`numero`)";
+            //ajouter la donnée a comparer dans la requete exemple: ''
+            second_request += " ='" + data[0] + "'";
+            second_request = second_request.replaceAll("[\r\n]+", "");
+            System.out.println(second_request);
             System.out.println(data[1]);
             local.executeUpdate(second_request);
         }
         //réafficher la liste table actualisé sans l'élément suprrimé
 
     }
-    
+
     /**
      * Ajoute un objet dans une table de la BDD
-     * @param data contient les nouvelles données à ajouter avec à data.get(0) le type de donnée (ex: medecin,infirmier...)
-     * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+     *
+     * @param data contient les nouvelles données à ajouter avec à data.get(0)
+     * le type de donnée (ex: medecin,infirmier...)
+     * @throws java.sql.SQLException Rejete si il n'arrvie pas à se connecter à
+     * la base de donnée locale
      */
-    public void add(ArrayList<String> data) throws SQLException
-    {
+    public void add(ArrayList<String> data) throws SQLException {
         ArrayList<Object> champs;
         String[] champs_nom;
-        String request="INSERT INTO `";
-        request+=data.get(0);
-        request+="` (";
+        String request = "INSERT INTO `";
+        request += data.get(0);
+        request += "` (";
         champs = local.remplirChampsTable(data.get(0));
-        String c=(String)champs.get(0);
-        c=c.substring(1);
+        String c = (String) champs.get(0);
+        c = c.substring(1);
         champs_nom = c.split(" ");
-        
-        if(("docteur".equals(data.get(0)))||("infirmier".equals(data.get(0))))
-        {
-            String second_request="INSERT INTO `employe` (";
+
+        if (("docteur".equals(data.get(0))) || ("infirmier".equals(data.get(0)))) {
+            String second_request = "INSERT INTO `employe` (";
             ArrayList<Object> second_champs = local.remplirChampsTable("employe");
             String[] second_champs_nom;
-            String second_c=(String)second_champs.get(0);
-            second_c=second_c.substring(1);
+            String second_c = (String) second_champs.get(0);
+            second_c = second_c.substring(1);
             second_champs_nom = second_c.split(" ");
-            for(int i=1;i<6;i++)
-            {
-                if(i>=2)
-                    second_request+=",";
-                second_request+="`" + second_champs_nom[i-1]+ "`";
+            for (int i = 1; i < 6; i++) {
+                if (i >= 2) {
+                    second_request += ",";
+                }
+                second_request += "`" + second_champs_nom[i - 1] + "`";
             }
-            second_request+=") VALUES (";
-            for(int i=1;i<6;i++)
-            {
-                if(i>=2)
-                    second_request+=",";
-                second_request+="'" + data.get(i)+ "'";
+            second_request += ") VALUES (";
+            for (int i = 1; i < 6; i++) {
+                if (i >= 2) {
+                    second_request += ",";
+                }
+                second_request += "'" + data.get(i) + "'";
             }
-            second_request+=")";
-            second_request=second_request.replaceAll("[\r\n]+", "");
+            second_request += ")";
+            second_request = second_request.replaceAll("[\r\n]+", "");
             System.out.println(second_request);
             local.executeUpdate(second_request);
-            for(int i=1;i<5;i++)
-            {
+            for (int i = 1; i < 5; i++) {
                 data.remove(2);
             }
         }
-        
-        for(int i=0;i<data.size()-1;i++)
-        {
-            if(i>=1)
-                request+=",";
-            request+="`" + champs_nom[i]+ "`";
+
+        for (int i = 0; i < data.size() - 1; i++) {
+            if (i >= 1) {
+                request += ",";
+            }
+            request += "`" + champs_nom[i] + "`";
         }
-        request+=") VALUES (";
-        for(int i=1;i<data.size();i++)
-        {
-            if(i>=2)
-                request+=",";
-            request+="'" + data.get(i)+ "'";
+        request += ") VALUES (";
+        for (int i = 1; i < data.size(); i++) {
+            if (i >= 2) {
+                request += ",";
+            }
+            request += "'" + data.get(i) + "'";
         }
-        request+=")";
-        request=request.replaceAll("[\r\n]+", "");
+        request += ")";
+        request = request.replaceAll("[\r\n]+", "");
         System.out.println(request);
         local.executeUpdate(request);
     }
-    
+
     /**
      * Modifie un objet dans une table de la BDD
+     *
      * @param numero_objet indice de l'objet à supprimer dans le arraylist table
-     * @param data contient les nouvelles données à modifier avec à data.get(0) le type de donnée (ex: medecin,infirmier...)
-     * @throws java.sql.SQLException    Rejete si il n'arrvie pas à se connecter à la base de donnée locale
+     * @param data contient les nouvelles données à modifier avec à data.get(0)
+     * le type de donnée (ex: medecin,infirmier...)
+     * @throws java.sql.SQLException Rejete si il n'arrvie pas à se connecter à
+     * la base de donnée locale
      */
-    public void modify(int numero_objet, ArrayList<String> data) throws SQLException
-    {
-        String element_to_delete= (String)table.get(numero_objet);
-        String[] ancient_data=element_to_delete.split(",");
+    public void modify(int numero_objet, ArrayList<String> data) throws SQLException {
+        String element_to_delete = (String) table.get(numero_objet);
+        String[] ancient_data = element_to_delete.split(",");
         ArrayList<Object> champs;
         String[] champs_nom;
-        String request="UPDATE `";
-        request+=data.get(0);
-        request+="` SET ";
+        String request = "UPDATE `";
+        request += data.get(0);
+        request += "` SET ";
         champs = local.remplirChampsTable(data.get(0));
-        String c=(String)champs.get(0);
-        c=c.substring(1);
+        String c = (String) champs.get(0);
+        c = c.substring(1);
         champs_nom = c.split(" ");
-        
-        
-        for(int i=0;i<data.size()-1;i++)
-        {
-            if(i>=1)
-                request+=", ";
-            request+="`" + champs_nom[i]+ "`=";
-            request+="'" + data.get(i+1)+ "'";
+
+        for (int i = 0; i < data.size() - 1; i++) {
+            if (i >= 1) {
+                request += ", ";
+            }
+            request += "`" + champs_nom[i] + "`=";
+            request += "'" + data.get(i + 1) + "'";
         }
-        request+=" WHERE";
-        for(int i = 0; i< data.size()-1;i++){
-                if(i>=1){
-                    request+=" AND";
-                }
-                //ajouter le champs a comparer dans la requete exemple: 'id'
-                request+=" CONCAT(`"+data.get(0)+"`.`" +champs_nom[i]+"`)" ;
-                //ajouter la donnée a comparer dans la requete exemple: ''
-                request+=" ='" +ancient_data[i]+"'" ;      
+        request += " WHERE";
+        for (int i = 0; i < data.size() - 1; i++) {
+            if (i >= 1) {
+                request += " AND";
+            }
+            //ajouter le champs a comparer dans la requete exemple: 'id'
+            request += " CONCAT(`" + data.get(0) + "`.`" + champs_nom[i] + "`)";
+            //ajouter la donnée a comparer dans la requete exemple: ''
+            request += " ='" + ancient_data[i] + "'";
         }
-        request=request.replaceAll("[\r\n]+", "");
+        request = request.replaceAll("[\r\n]+", "");
         System.out.println(request);
         local.executeUpdate(request);
     }
@@ -302,23 +298,20 @@ public class gestionBDD {
     public ArrayList<String> getTable() {
         return table;
     }
-    
+
     public void setTable(ArrayList<String> m_table) throws SQLException {
-        
+
         for (String liste1 : m_table) {
-                table.add(liste1);
-            }
+            table.add(liste1);
+        }
     }
-    
-    public void setNomTable(String nom)
-    {
-        nom_table=nom;
+
+    public void setNomTable(String nom) {
+        nom_table = nom;
     }
-    
-    public void setChampsTable(ArrayList<String> champs)
-    {
-        for(String liste1 : champs)
-        {
+
+    public void setChampsTable(ArrayList<String> champs) {
+        for (String liste1 : champs) {
             getChamps_table().add(liste1);
         }
     }

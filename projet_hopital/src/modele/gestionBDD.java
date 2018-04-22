@@ -55,6 +55,29 @@ public class gestionBDD {
 
     }
     
+    public gestionBDD(String nom_table) throws ClassNotFoundException, SQLException{
+        local = new Connexion("hopital","root","");
+        
+        //Ajout STeven
+        remplirTables();
+        
+        //Ajout STeven
+        
+        ///test pour bosser sur un exemple (docteur ici)
+        champs_table = local.remplirChampsTable(nom_table);
+        for(Object elem : champs_table){
+        System.out.println(elem+"  ");
+        }
+
+        table = local.remplirChampsRequete("SELECT * FROM " + nom_table);
+        for(Object elem : table){
+        System.out.println(elem+"  ");
+        }
+        this.nom_table=nom_table;
+        //fin du test
+
+    }
+    
     /**
      * 
      * Constructeur de la classe gestion avec la BDD en ligne

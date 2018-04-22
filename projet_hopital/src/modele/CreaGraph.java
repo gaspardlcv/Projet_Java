@@ -12,7 +12,14 @@ import org.jfree.data.general.DefaultPieDataset;
  *
  * @author Pierre
  */
-public class CreaGraph {   //se connecte à la bdd et récupère les données nécessaires dans un dataset (format utilisé pour créer les graphiques)
+public class CreaGraph {   
+    /**
+     * Se connecte à la bdd et récupère les données nécessaires dans un dataset (format utilisé pour créer les graphiques).
+     * @param table la table dans laquelle aller chercher les informations
+     * @param c1 le nom de la premiere colonne de la table qui nous interesse
+     * @param c2 le nom de la deuxieme colonne de la table qui nous interesse
+     * @return les données récupérées dans un objet DefaultPieDataset propre à la bibliothèque JFreeChart
+     */
     public DefaultPieDataset connection(String table, String c1, String c2) {
         DefaultPieDataset dataset = new DefaultPieDataset();
         try {

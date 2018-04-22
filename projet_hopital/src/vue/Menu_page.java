@@ -710,6 +710,9 @@ public class Menu_page extends JFrame implements ActionListener  {
        
     }
     
+    /**
+     * Création et positionnement des éléments de l'onglet reporting
+     */
     public void onglet_reporting() {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -736,18 +739,18 @@ public class Menu_page extends JFrame implements ActionListener  {
         
         panel_reporting.setLayout(null);
 
-        jPanel5.setBounds(110,120,570,360);
+        jPanel5.setBounds(190,190,900,450);
         jPanel5.setLayout(new java.awt.CardLayout());
         
-        jPanel3.setBounds(0,0,570,360);
-        jPanel4.setBounds(0,0,570,360);
-        jPanel2.setBounds(0,0,570,360);
-        jPanel1.setBounds(0,0,570,360);
+        jPanel3.setBounds(0,0,900,450);
+        jPanel4.setBounds(0,0,900,450);
+        jPanel2.setBounds(0,0,900,450);
+        jPanel1.setBounds(0,0,900,450);
         
-        jButton1.setBounds(25, 25, 345, 30);
-        jButton2.setBounds(415, 25, 345, 30);
-        jButton3.setBounds(25, 70, 345, 30);
-        jButton4.setBounds(415, 70, 345, 30);
+        jButton1.setBounds(60, 40, 550, 30);
+        jButton2.setBounds(675, 40, 550, 30);
+        jButton3.setBounds(60, 90, 550, 30);
+        jButton4.setBounds(675, 90, 550, 30);
         
         jPanel5.add(jPanel3, "panelOne");
         jPanel5.add(jPanel4, "panelTwo");
@@ -761,21 +764,37 @@ public class Menu_page extends JFrame implements ActionListener  {
         panel_reporting.add(jButton4);
     }
 
+    /**
+     * Passe au "panelOne" du CardLayout quand on clique sur le bouton 1
+     * @param evt l'évènement du clic sur le bouton
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout card = (CardLayout) jPanel5.getLayout();
         card.show(jPanel5, "panelOne");
     }
 
+    /**
+     * Passe au "panelTwo" du CardLayout quand on clique sur le bouton 2
+     * @param evt l'évènement du clic sur le bouton
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout card = (CardLayout) jPanel5.getLayout();
         card.show(jPanel5, "panelTwo");
     }
 
+    /**
+     * Passe au "panelThree" du CardLayout quand on clique sur le bouton 3
+     * @param evt l'évènement du clic sur le bouton
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout card = (CardLayout) jPanel5.getLayout();
         card.show(jPanel5, "panelThree");
     }
     
+    /**
+     * Passe au "panelFour" du CardLayout quand on clique sur le bouton 4
+     * @param evt l'évènement du clic sur le bouton
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
         CardLayout card = (CardLayout) jPanel5.getLayout();
         card.show(jPanel5, "panelFour");

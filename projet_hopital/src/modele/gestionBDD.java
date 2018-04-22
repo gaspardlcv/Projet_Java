@@ -20,8 +20,8 @@ import vue.CustomTextField;
 
 public class gestionBDD {
     protected Connexion local;
-    protected ArrayList<Object> table;//données de la table
-    protected ArrayList<Object> champs_table;//nom des propriétes de la table
+    protected ArrayList<String> table;//données de la table
+    protected ArrayList<String> champs_table;//nom des propriétes de la table
     protected String nom_table;//nom de la table recherchée obetnue dnas le menu de recherche
     
     // recherches de base 
@@ -40,8 +40,8 @@ public class gestionBDD {
         //Ajout STeven
         
         ///test pour bosser sur un exemple (docteur ici)
-        champs_table = new ArrayList<Object>();
-        table = new ArrayList<Object>();
+        champs_table = new ArrayList<String>();
+        table = new ArrayList<String>();
         nom_table="";
         ///fin du test
 
@@ -124,8 +124,8 @@ public class gestionBDD {
     public String[] getcleprimaire() throws SQLException
     {
         String[] splitchamps;
-        String champs= (String)champs_table.get(0);
-        champs=champs.substring(1);
+        String champs= (String)getChamps_table().get(0);
+       // champs=champs.substring(1);
         splitchamps = champs.split(" ");
         return splitchamps;
     }
@@ -138,19 +138,24 @@ public class gestionBDD {
     public void remove(int numero_objet) throws SQLException
     {
         String[] champs;
+        System.out.println("remove");
+        System.out.println(table.size());
+        
         String element_to_delete= (String)table.get(numero_objet);
         String request="DELETE FROM `";
         String[] data=element_to_delete.split(",");;
-        request+=nom_table;
+        request+=getNom_table();
         request+="`";
         champs=getcleprimaire();  
+        System.out.println("WOH");
+        System.out.println(champs[0]);
         request+=" WHERE";
         for(int i = 0; i< champs.length;i++){
                 if(i>=1){
                     request+=" AND";
                 }
                 //ajouter le champs a comparer dans la requete exemple: 'id'
-                request+=" CONCAT(`"+nom_table+"`.`" +champs[i]+"`)" ;
+                request+=" CONCAT(`"+getNom_table()+"`.`" +champs[i]+"`)" ;
                 //ajouter la donnée a comparer dans la requete exemple: ''
                 request+=" ='" +data[i]+"'" ;
                 request=request.replaceAll("[\r\n]+", "");
@@ -159,7 +164,7 @@ public class gestionBDD {
         System.out.println(request);  
         local.executeUpdate(request);
         
-        if(("docteur".equals(nom_table))||("infirmier".equals(nom_table)))
+        if(("docteur".equals(getNom_table()))||("infirmier".equals(getNom_table())))
         {
             String second_request="DELETE FROM `employe`  WHERE";
             second_request+=" CONCAT(`employe`.`numero`)" ;
@@ -294,9 +299,41 @@ public class gestionBDD {
     /**
      * @return the table
      */
-    public ArrayList<Object> getTable() {
+    public ArrayList<String> getTable() {
         return table;
     }
     
+    public void setTable(ArrayList<String> m_table) throws SQLException {
+        
+        for (String liste1 : m_table) {
+                table.add(liste1);
+            }
+    }
     
+    public void setNomTable(String nom)
+    {
+        nom_table=nom;
+    }
+    
+    public void setChampsTable(ArrayList<String> champs)
+    {
+        for(String liste1 : champs)
+        {
+            getChamps_table().add(liste1);
+        }
+    }
+
+    /**
+     * @return the champs_table
+     */
+    public ArrayList<String> getChamps_table() {
+        return champs_table;
+    }
+
+    /**
+     * @return the nom_table
+     */
+    public String getNom_table() {
+        return nom_table;
+    }
 }

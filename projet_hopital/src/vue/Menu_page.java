@@ -534,7 +534,7 @@ public class Menu_page extends JFrame implements ActionListener  {
         /*Creation d'un listener pour la liste deroulante*/
          combo_supp.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent arg0) {
-               
+                
                 /*On récupère le nom sélectionné de la liste*/
                 String nom_supp = (String)combo_supp.getSelectedItem();
                 
@@ -545,8 +545,21 @@ public class Menu_page extends JFrame implements ActionListener  {
                 ArrayList <String> l_champs = null;
                 try {
                     gestion = new gestionBDD();
-                 //   l_champs = connect.getChamps(nom_supp);
-                 l_champs = connect.recupChampsTable(nom_supp);   
+                    
+             //   l_champs = connect.getChamps(nom_supp);
+             
+                 l_champs = connect.recupChampsTable(nom_supp);
+                 
+                 System.out.println(gestion.getTable().size());
+                 gestion.getTable().clear();
+                 gestion.getChamps_table().clear();
+                 
+               //  gestion.setTable(connect.remplirTable("select * from "+nom_supp));
+                 gestion.setNomTable(nom_supp);
+                 gestion.setChampsTable(l_champs);
+                 
+                 
+                 
                  
                     /*Creation d'une table de strings de la taille de 
                     l'ArrayList car arraylist taille variable alors que
@@ -582,7 +595,8 @@ public class Menu_page extends JFrame implements ActionListener  {
                         manger++;
                         
                     }
-                     
+                     gestion.setTable(connect.remplirTable("select * from "+nom_supp));
+                     System.out.println(gestion.getTable().size());
                     DefaultTableModel table_richar = new DefaultTableModel(tous_valeurs, tab);
                      
                     tab_supp.setModel(table_richar);
@@ -844,7 +858,7 @@ public class Menu_page extends JFrame implements ActionListener  {
            
         }
      
-        gestionBDD gestion = null;
+     /*   gestionBDD gestion = null;
         try {
             gestion = new gestionBDD();
           
@@ -852,7 +866,7 @@ public class Menu_page extends JFrame implements ActionListener  {
             Logger.getLogger(Menu_page.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Menu_page.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         
         if(source == confirm)
         {
@@ -868,6 +882,7 @@ public class Menu_page extends JFrame implements ActionListener  {
         if(source == button_supp){
             try {
                 /*On appelle la fonction supprimer qui va agir sur la BDD*/
+                System.out.println(tab_supp.getSelectedRow());
                 gestion.remove(tab_supp.getSelectedRow());
                 
                 /*On rafraiche la page avec le champ supprimé*/

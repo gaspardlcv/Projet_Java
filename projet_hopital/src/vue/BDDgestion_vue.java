@@ -280,14 +280,14 @@ public class BDDgestion_vue extends gestionBDD implements ActionListener, ItemLi
             
             for(int i=0;i<local.getChamps(nomTable).size();i++)
             {
-                 champs_table.add(local.getChamps(nomTable).get(i).toString());
-                 champsCoches.add(new JCheckBox(champs_table.get(i).toString()));
+                 getChamps_table().add(local.getChamps(nomTable).get(i).toString());
+                 champsCoches.add(new JCheckBox(getChamps_table().get(i).toString()));
                  champsCoches.get(i).setVisible(true);
                  champsCoches.get(i).addItemListener(this);
                  
                  champs_recherche.add(new CustomTextField());
                  champs_recherche.get(i).setPreferredSize(new Dimension(100,15));
-                 champs_recherche.get(i).setId(champs_table.get(i).toString());
+                 champs_recherche.get(i).setId(getChamps_table().get(i).toString());
                  champs_recherche.get(i).setVisible(true);
                  champs_recherche.get(i).getDocument().addDocumentListener(this);
                  

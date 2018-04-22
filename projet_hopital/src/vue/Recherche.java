@@ -149,10 +149,10 @@ public class Recherche extends gestionBDD implements ActionListener, ItemListene
             nom_champs_coches=(String[]) champsChoisis.toArray(nom_champs_coches);
             
             // afficher les champs de la table selectionnee 
-            champs_table.clear();
+            getChamps_table().clear();
             for (String liste1 : liste_champs) 
             {
-                champs_table.add(liste1);
+                getChamps_table().add(liste1);
                 
             }
             
@@ -244,22 +244,22 @@ public class Recherche extends gestionBDD implements ActionListener, ItemListene
 
             
             // afficher les champs de la table selectionnee
-            champs_table.clear();
+            getChamps_table().clear();
             for (String liste1 : liste) 
             {
-                champs_table.add(liste1);
+                getChamps_table().add(liste1);
             }
             
             for(int i=0;i<local.getChamps(nomTable).size();i++)
             {
-                 champs_table.add(local.getChamps(nomTable).get(i).toString());
-                 champsCoches.add(new JCheckBox(champs_table.get(i).toString()));
+                 getChamps_table().add(local.getChamps(nomTable).get(i).toString());
+                 champsCoches.add(new JCheckBox(getChamps_table().get(i).toString()));
                  champsCoches.get(i).setVisible(true);
                  champsCoches.get(i).addItemListener(this);
                  
                  champs_recherche.add(new CustomTextField());
                  champs_recherche.get(i).setPreferredSize(new Dimension(100,15));
-                 champs_recherche.get(i).setId(champs_table.get(i).toString());
+                 champs_recherche.get(i).setId(getChamps_table().get(i).toString());
                  champs_recherche.get(i).setVisible(true);
                  champs_recherche.get(i).getDocument().addDocumentListener(this);
                  
